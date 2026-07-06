@@ -201,7 +201,7 @@ graph LR
 
 ```bash
 # 1. Clone
-git clone https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
+git clone https://github.com/Lab-sku/SyntropyBridge.git
 cd YOUR_REPO_NAME
 
 # 2. Configure production environment
@@ -473,9 +473,9 @@ This project is licensed under the MIT License — see the [LICENSE](LICENSE) fi
 
 ## ⭐ Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=YOUR_USERNAME/YOUR_REPO_NAME&type=Date)](https://star-history.com/#YOUR_USERNAME/YOUR_REPO_NAME&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=Lab-sku/SyntropyBridge&type=Date)](https://star-history.com/#Lab-sku/SyntropyBridge&Date)
 
-> Replace `YOUR_USERNAME/YOUR_REPO_NAME` with your actual repository path after the first stars arrive.
+> Replace `Lab-sku/SyntropyBridge` with your actual repository path after the first stars arrive.
 
 ---
 
@@ -483,19 +483,19 @@ This project is licensed under the MIT License — see the [LICENSE](LICENSE) fi
 
 Thanks to everyone who has contributed to SyntropyBridge!
 
-<a href="https://github.com/YOUR_USERNAME/YOUR_REPO_NAME/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=YOUR_USERNAME/YOUR_REPO_NAME" alt="Contributors" />
+<a href="https://github.com/Lab-sku/SyntropyBridge/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Lab-sku/SyntropyBridge" alt="Contributors" />
 </a>
 
-> Replace `YOUR_USERNAME/YOUR_REPO_NAME` with your actual repository path.
+> Replace `Lab-sku/SyntropyBridge` with your actual repository path.
 
 ---
 
 ## 💬 Support
 
 - 📧 Email: contact@your-domain.com
-- 💬 Discussions: [GitHub Discussions](https://github.com/YOUR_USERNAME/YOUR_REPO_NAME/discussions)
-- 🐛 Issues: [GitHub Issues](https://github.com/YOUR_USERNAME/YOUR_REPO_NAME/issues)
+- 💬 Discussions: [GitHub Discussions](https://github.com/Lab-sku/SyntropyBridge/discussions)
+- 🐛 Issues: [GitHub Issues](https://github.com/Lab-sku/SyntropyBridge/issues)
 
 <div align="center">
   <p>If you find SyntropyBridge helpful, please consider giving us a ⭐ on GitHub!</p>
