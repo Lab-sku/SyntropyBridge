@@ -1,0 +1,1899 @@
+{
+  "common": {
+    "appName": "API Hub",
+    "appTagline": "Sign in to access the admin console and user panel",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "search": "Search",
+    "refresh": "Refresh",
+    "retry": "Retry",
+    "loading": "Loading…",
+    "submit": "Submit",
+    "back": "Back",
+    "close": "Close",
+    "yes": "Yes",
+    "no": "No",
+    "all": "All",
+    "copy": "Copy",
+    "copied": "Copied",
+    "more": "More",
+    "actions": "Actions",
+    "status": "Status",
+    "name": "Name",
+    "description": "Description",
+    "createdAt": "Created",
+    "updatedAt": "Updated",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "optional": "optional",
+    "required": "required",
+    "total": "Total",
+    "currency": "credits",
+    "done": "Done",
+    "noData": "No data",
+    "realtime": "Realtime",
+    "operationFailed": "Operation failed",
+    "saveFailed": "Save failed",
+    "notes": "Notes",
+    "type": "Type",
+    "user": "User",
+    "platform": "Platform",
+    "model": "Model"
+  },
+  "theme": {
+    "toggleLabel": "Toggle theme",
+    "light": "Light",
+    "lightHint": "Always use the light appearance",
+    "dark": "Dark",
+    "darkHint": "Always use the dark appearance",
+    "system": "System",
+    "systemHint": "Follow the operating system theme"
+  },
+  "language": {
+    "toggleLabel": "Switch language",
+    "current": "Current language"
+  },
+  "nav": {
+    "workspace": "Workspace",
+    "account": "Account",
+    "usage": "Usage",
+    "wallet": "Wallet",
+    "integration": "API Guide",
+    "overview": "Overview",
+    "chat": "Chat",
+    "providers": "Providers",
+    "customProviders": "Custom",
+    "users": "Users",
+    "subscriptions": "Subscriptions",
+    "billing": "Billing",
+    "logs": "Logs",
+    "planAndKey": "Plan & API Key",
+    "redeemCodes": "Redeem Codes",
+    "pricing": "Pricing",
+    "plans": "Plans",
+    "promoCodes": "Promo Codes",
+    "signOut": "Sign out"
+  },
+  "sidebar": {
+    "menu": "Menu",
+    "signOut": "Sign out",
+    "openNav": "Open navigation"
+  },
+  "auth": {
+    "adminTab": "Admin",
+    "userTab": "User",
+    "passwordLogin": "Password",
+    "apiKeyLogin": "API Key",
+    "username": "Username",
+    "adminUsername": "Admin username",
+    "password": "Password",
+    "setPassword": "Set password",
+    "confirmPassword": "Confirm password",
+    "apiKey": "API Key",
+    "apiKeyPlaceholder": "Paste the API key issued by admin",
+    "usernamePlaceholder": "Enter username",
+    "passwordPlaceholder": "Enter password",
+    "passwordHint": "At least 12 chars and 3 character classes",
+    "confirmPasswordPlaceholder": "Re-enter password",
+    "submit": "Sign in",
+    "submitInit": "Initialize & sign in",
+    "submitting": "Signing in…",
+    "submittingInit": "Initializing…",
+    "register": "Register",
+    "forgotPassword": "Forgot password",
+    "backToLogin": "Back to sign in",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "loginFailed": "Sign-in failed",
+    "initFailed": "Initialization failed",
+    "passwordMismatch": "The two passwords do not match",
+    "adminNotInitialized": "Admin not initialized",
+    "apiKeyHint": "Admins can issue API keys for users. Sign in with the key to access your personal dashboard and integration info."
+  },
+  "app": {
+    "name": "API Hub"
+  },
+  "login": {
+    "user": {
+      "subtitle": "Sign in to start chatting",
+      "registerSubtitle": "Create an account to access AI services",
+      "username": "Username",
+      "usernamePlaceholder": "Enter username",
+      "email": "Email",
+      "emailPlaceholder": "Enter email address",
+      "password": "Password",
+      "passwordPlaceholder": "Enter password",
+      "confirmPassword": "Confirm Password",
+      "confirmPasswordPlaceholder": "Re-enter password",
+      "captchaLabel": "Human verification",
+      "captchaPlaceholder": "Enter the answer",
+      "loginButton": "Sign in",
+      "registerButton": "Sign up",
+      "noAccount": "Don't have an account?",
+      "registerLink": "Sign up",
+      "hasAccount": "Already have an account?",
+      "loginLink": "Sign in",
+      "adminEntrance": "Admin portal",
+      "tab": {
+        "login": "Sign in",
+        "register": "Sign up"
+      },
+      "validation": {
+        "usernameRequired": "Username is required",
+        "passwordRequired": "Password is required",
+        "usernameMin": "Username must be at least 3 characters",
+        "usernameChars": "Username may only contain letters, digits, underscores and Chinese characters",
+        "emailInvalid": "Please enter a valid email address",
+        "passwordMin": "Password must be at least 12 characters",
+        "passwordComplexity": "Password must contain at least 3 of: uppercase, lowercase, digits, symbols",
+        "passwordMatch": "Passwords do not match",
+        "captchaRequired": "Please complete the verification"
+      },
+      "toast": {
+        "welcome": "Welcome back, {{name}}",
+        "registerSuccess": "Registration successful, please sign in",
+        "error": "Operation failed, please try again",
+        "captchaRequired": "Please complete the verification to sign in"
+      }
+    },
+    "title": "Sign in to Console",
+    "subtitle": "Continue with your admin account",
+    "toast": {
+      "welcomeBack": "Welcome back",
+      "adminCreated": "Admin created — please sign in"
+    },
+    "error": {
+      "loginFailed": "Sign-in failed",
+      "initFailed": "Initialization failed",
+      "passwordMismatch": "Passwords do not match"
+    },
+    "init": {
+      "detected": "System not initialized",
+      "createAdminFirst": "Create an admin account before signing in.",
+      "initializeNow": "Initialize now",
+      "title": "Initialize Admin",
+      "description": "Create the first admin account. Username 3–50 chars, password at least 8 chars.",
+      "adminUsername": "Admin username",
+      "password": "Password",
+      "confirmPassword": "Confirm password",
+      "back": "Back",
+      "creating": "Creating…",
+      "createAdmin": "Create Admin"
+    },
+    "form": {
+      "username": "Username",
+      "password": "Password",
+      "hidePassword": "Hide",
+      "showPassword": "Show",
+      "rememberUsername": "Remember username",
+      "autoLogin7Days": "Auto sign-in for 7 days",
+      "verifying": "Verifying…",
+      "login": "Sign in"
+    },
+    "admin": {
+      "title": "Admin Sign In",
+      "subtitle": "Sign in to the admin console to manage users and system",
+      "username": "Admin username",
+      "usernamePlaceholder": "Enter admin username",
+      "password": "Password",
+      "passwordPlaceholder": "Enter password",
+      "loginButton": "Sign in",
+      "backToUser": "Back to user sign in",
+      "validation": {
+        "usernameRequired": "Username is required",
+        "passwordRequired": "Password is required"
+      },
+      "toast": {
+        "welcome": "Welcome back",
+        "error": "Sign-in failed"
+      }
+    },
+    "help": {
+      "firstDeploy": "First deploy? Default account",
+      "checkLogs": "Check backend init logs"
+    },
+    "hero": {
+      "titleLine1": "One gateway,",
+      "titleLine2": "connect all AI capabilities",
+      "description": "Unified access to OpenAI, Anthropic, Google and more — no need to manage keys, quotas and routes for each provider separately."
+    },
+    "features": {
+      "builtInPlatforms": "12+ built-in platforms",
+      "providersDesc": "Qwen, DeepSeek, Doubao, Moonshot…",
+      "modelsReady": "300+ models ready to use",
+      "modelsDesc": "Dynamic discovery, unified OpenAI-compatible protocol, multi-key rotation",
+      "usageControl": "Enterprise-grade usage control",
+      "usageDesc": "5-hour & weekly quotas, subscription approval, detailed audit logs"
+    },
+    "adminLink": "Admin portal"
+  },
+  "chat": {
+    "suggestions": {
+      "writeCode": {
+        "title": "Write code",
+        "desc": "Implement a concurrency-safe LRU cache"
+      },
+      "explain": {
+        "title": "Explain concept",
+        "desc": "Why is PPO more stable than REINFORCE in RLHF"
+      },
+      "translate": {
+        "title": "Translate & polish",
+        "desc": "Rewrite the following English email to be more professional"
+      },
+      "analyze": {
+        "title": "Analyze data",
+        "desc": "Generate visualization and insights from CSV"
+      }
+    },
+    "toast": {
+      "selectModelFirst": "Please select a model first",
+      "notSupported": "Conversation not supported — try a different model",
+      "deleted": "Deleted"
+    },
+    "sidebar": {
+      "newChat": "New chat",
+      "searchPlaceholder": "Search conversations",
+      "history": "History",
+      "noConversations": "No conversations yet",
+      "noMatching": "No matching conversations",
+      "deleteConfirm": "Delete this conversation?",
+      "adminDashboard": "Admin Dashboard",
+      "adminDesc": "Manage platform",
+      "logout": "Sign out",
+      "open": "Open sidebar",
+      "close": "Close sidebar"
+    },
+    "header": {
+      "newChat": "New chat"
+    },
+    "empty": {
+      "title": "How can I help you?",
+      "subtitle": "Select a model from the sidebar and start typing"
+    },
+    "scrollToBottom": "Scroll to bottom",
+    "input": {
+      "placeholderWithModel": "Type a message with {{model}}…",
+      "selectModelPlaceholder": "Select a model first…",
+      "stopGenerating": "Stop generating",
+      "send": "Send",
+      "disclaimer": "Model output may be inaccurate — verify important info · Enter to send, Shift+Enter for newline"
+    },
+    "messageBubble": {
+      "you": "You",
+      "admin": "Admin",
+      "assistant": "Assistant",
+      "regenerate": "Regenerate",
+      "thinking": "Thinking..."
+    },
+    "errorPrefix": "Error",
+    "stoppedLabel": "[stopped]",
+    "loadConversationsFailed": "Failed to load conversation list",
+    "loadConversationFailed": "Failed to load conversation",
+    "deleteConversationFailed": "Failed to delete conversation"
+  },
+  "modelPicker": {
+    "selectModel": "Select model",
+    "searchPlaceholder": "Search chat models…",
+    "searchPlaceholderWithType": "Search {{type}} models…",
+    "clear": "Clear",
+    "noMatch": "No matching models",
+    "platformCount": "{{count}} platforms",
+    "modelCount": "{{count}} models",
+    "hiddenCount": "Hiding {{count}} non-{{type}} models",
+    "permissionHint": "Note: Some models may be unavailable due to API Key permissions",
+    "pricingTooltip": "Input {{input}} / Output {{output}} cr / 1k tokens",
+    "typeLabels": {
+      "chat": "chat",
+      "embedding": "embedding",
+      "image": "image",
+      "audio": "audio"
+    }
+  },
+  "register": {
+    "title": "Sign up",
+    "subtitle": "Create an account and verify your email to sign in",
+    "username": "Username",
+    "usernamePlaceholder": "Enter username",
+    "email": "Email",
+    "emailPlaceholder": "Enter email",
+    "password": "Password",
+    "passwordPlaceholder": "At least 8 characters",
+    "confirmPassword": "Confirm password",
+    "inviteCode": "Invite code",
+    "submit": "Sign up",
+    "submitting": "Signing up…",
+    "submitFailed": "Sign-up failed",
+    "successMessage": "Sign-up complete — please verify your email and sign in",
+    "haveAccount": "Already have an account?"
+  },
+  "forgot": {
+    "title": "Forgot password",
+    "subtitle": "Enter your registered email to get a reset link",
+    "email": "Email",
+    "emailPlaceholder": "Enter your registered email",
+    "submit": "Send reset link",
+    "submitting": "Sending…",
+    "sendFailed": "Send failed",
+    "backToLogin": "Back to sign in",
+    "sent": "Reset link has been sent to your email",
+    "sentMessage": "If the email is registered, you will receive a reset link shortly.",
+    "remember": "Remembered your password?"
+  },
+  "reset": {
+    "title": "Reset Password",
+    "subtitle": "Enter your new password below",
+    "newPassword": "New password",
+    "newPasswordPlaceholder": "At least 12 characters",
+    "confirmPassword": "Confirm password",
+    "confirmPasswordPlaceholder": "Re-enter password",
+    "submit": "Reset Password",
+    "success": "Password reset successfully",
+    "failed": "Password reset failed",
+    "expired": "This reset link has expired or is invalid.",
+    "requestNew": "Request a new link",
+    "validation": {
+      "passwordMin": "Password must be at least 12 characters"
+    }
+  },
+  "dashboard": {
+    "welcome": "Welcome back",
+    "quickActions": "Quick actions",
+    "recentActivity": "Recent activity",
+    "openChat": "Open chat",
+    "viewBilling": "View billing",
+    "viewUsage": "View usage",
+    "manageKeys": "Manage API keys"
+  },
+  "admin": {
+    "settings": {
+      "title": "System Settings",
+      "subtitle": "Configure SMTP email service and email verification",
+      "smtpConfig": "SMTP Email Configuration",
+      "smtpDesc": "Configure email server for sending verification emails and notifications",
+      "smtpUser": "SMTP Username",
+      "smtpPassword": "SMTP Password",
+      "passwordHint": "Leave empty to keep the saved password unchanged",
+      "fromEmail": "From Email",
+      "emailVerification": "Email Verification Settings",
+      "emailVerificationDesc": "Control whether users need email verification when registering",
+      "enableEmailVerification": "Enable Email Verification",
+      "enableEmailVerificationDesc": "When enabled, users must verify their email address during registration",
+      "smtpNotConfiguredWarning": "Please configure SMTP server first, otherwise emails cannot be sent",
+      "testEmail": "Test Email",
+      "testEmailDesc": "Send a test email to verify SMTP configuration",
+      "testEmailPlaceholder": "Enter test email address",
+      "sendTest": "Send Test",
+      "saveConfig": "Save Configuration",
+      "loadError": "Failed to load configuration",
+      "saveSuccess": "Configuration saved",
+      "saveError": "Failed to save configuration",
+      "enterTestEmail": "Please enter test email address",
+      "testEmailSent": "Test email sent",
+      "testEmailFailed": "Failed to send test email"
+    },
+    "dashboard": {
+      "subtitle": "Platform status and business metrics",
+      "totalUsers": "Total users",
+      "active24h": "Active 24h",
+      "totalRevenue": "Total revenue",
+      "recentDays": "Last {{days}} days",
+      "todayRequests": "Today's requests",
+      "todayCost": "Today's cost",
+      "todayTokens": "Today's tokens",
+      "todayTokenUsage": "Token consumption",
+      "creditConsumption": "Credits consumed",
+      "dataRange": "Data range",
+      "requestTrend": "Request trend",
+      "recentDaysRequests": "Requests in the last {{days}} days",
+      "noRequestData": "No request data",
+      "revenueTrend": "Revenue trend",
+      "revenueTrendDesc": "Paid orders aggregated by day",
+      "noRevenueData": "No revenue data",
+      "topModels": "Top models TOP 8",
+      "sortedByTokens": "Sorted by token consumption",
+      "noModelData": "No model data",
+      "platformUsage": "Platform usage",
+      "byTokenShare": "By token share",
+      "activeUsers": "Active users TOP 5",
+      "sortedByCredits": "Sorted by credits / tokens",
+      "noUserData": "No user data",
+      "requests": "requests",
+      "times": "times",
+      "quickLinks": "Quick links",
+      "providers": "Providers",
+      "builtInPlatforms": "built-in platforms",
+      "customProviders": "Custom providers",
+      "openaiCompat": "OpenAI-compatible",
+      "userManagement": "User management",
+      "users": "users",
+      "subscriptionApproval": "Subscription approval",
+      "pendingRequests": "pending requests",
+      "redeemCodes": "Redeem codes",
+      "issueCredits": "Issue credits",
+      "modelPricing": "Model pricing",
+      "creditPrice": "credit price",
+      "systemStatus": "System status",
+      "apiService": "API service",
+      "running": "Running",
+      "modelSync": "Model sync",
+      "rateLimit": "Rate limiting",
+      "auditLog": "Audit log",
+      "pricingActive": "Pricing active",
+      "loaded": "Loaded",
+      "recentLogs": "Recent request logs",
+      "recent8": "Last 8",
+      "systemHealth": "System health",
+      "systemHealthDesc": "Database pool and upstream provider status",
+      "dbPool": "DB connection pool",
+      "dbPoolUnavailable": "Pool stats unavailable",
+      "providerHealth": "Provider health",
+      "up": "up",
+      "details": "Details",
+      "reconAnomaly": "Recon anomalies",
+      "reconAnomalyDesc": "{{pending}} pending review"
+    }
+  },
+  "providers": {
+    "title": "Providers",
+    "subtitle": "Configure official and custom relay channels",
+    "subtitleCount": "{{count}} built-in platforms",
+    "addProvider": "Add provider",
+    "refreshAll": "Refresh all",
+    "providerName": "Provider",
+    "baseUrl": "Base URL",
+    "apiKey": "API Key",
+    "status": "Status",
+    "lastSync": "Last sync",
+    "test": "Test connection",
+    "testOk": "Connection OK",
+    "testFailed": "Connection failed",
+    "syncModels": "Sync models",
+    "channels": "Channels",
+    "addChannel": "Add channel",
+    "card": {
+      "status": "Status",
+      "configured": "Configured",
+      "notConfigured": "Not configured",
+      "models": "Models",
+      "configureKey": "Configure Key",
+      "test": "Test"
+    },
+    "dialog": {
+      "title": "Configure {{name}}",
+      "description": "Set API key and endpoint to enable this platform",
+      "saveConfig": "Save config",
+      "enterApiKey": "Enter API Key",
+      "keyHint": "Leave empty to keep unchanged · saved keys are masked",
+      "enablePlatform": "Enable this platform",
+      "enableHint": "Disabled platforms won't appear in the model picker"
+    },
+    "toast": {
+      "saved": "Saved",
+      "saveFailed": "Save failed",
+      "connectSuccess": "Connection successful",
+      "connectFailed": "Connection failed",
+      "testFailed": "Test failed",
+      "disabled": "Disabled",
+      "enabled": "Enabled",
+      "operationFailed": "Operation failed",
+      "refreshed": "Refreshed",
+      "refreshFailed": "Refresh failed"
+    },
+    "empty": {
+      "title": "No providers",
+      "description": "Backend returned no provider configurations"
+    },
+    "keyDeleted": "Key deleted",
+    "deleteFailed": "Delete failed",
+    "pingLatency": "Ping latency",
+    "deleteProviderKey": "Delete provider Key",
+    "channelsCreated": "{{count}} channels created",
+    "configuredApiKeys": "Configured API Keys",
+    "loadingKeys": "Loading...",
+    "addKeyHint": "Add a Key. Multiple Keys are separated by commas; the platform rotates and overrides them automatically.",
+    "pauseToDelete": "Pause to reveal the delete button; hover to ping and measure latency.",
+    "addProviderKey": "Add provider Key",
+    "multiKeyHint": "Multiple Keys are comma-separated; the platform rotates them automatically and overrides the default Key."
+  },
+  "customProviders": {
+    "title": "Custom Providers",
+    "subtitle": "OpenAI-compatible private endpoints",
+    "refreshModels": "Refresh models",
+    "addPlatform": "Add platform",
+    "apiKeys": "API Keys",
+    "create": {
+      "title": "Add custom OpenAI-compatible platform",
+      "description": "Support any endpoint using the OpenAI Chat Completions protocol",
+      "add": "Add",
+      "supportedPlatforms": "Supported: Together, Groq, SiliconFlow, etc."
+    },
+    "form": {
+      "platformName": "Platform name *",
+      "displayName": "Display name",
+      "slug": "Identifier slug",
+      "slugPlaceholder": "Auto-generated from name if left empty",
+      "primaryApiKey": "Primary API Key",
+      "backupKeys": "Backup API Keys (one per line, for rotation)",
+      "notes": "Notes",
+      "optional": "optional"
+    },
+    "delete": {
+      "title": "Delete custom platform",
+      "confirm": "Confirm delete",
+      "description": "Delete {{name}}? This cannot be undone. Saved API keys will also be removed."
+    },
+    "status": {
+      "enabled": "Enabled",
+      "disabled": "Disabled"
+    },
+    "card": {
+      "notes": "Notes",
+      "test": "Test",
+      "delete": "Delete"
+    },
+    "toast": {
+      "added": "Added",
+      "addFailed": "Add failed",
+      "deleted": "Deleted",
+      "deleteFailed": "Delete failed",
+      "refreshed": "Refreshed",
+      "refreshFailed": "Refresh failed",
+      "connectSuccess": "Connection successful",
+      "connectFailed": "Connection failed",
+      "testFailed": "Test failed"
+    },
+    "empty": {
+      "title": "No custom platforms yet",
+      "description": "Add any OpenAI-compatible endpoint, e.g. SiliconFlow…",
+      "addFirst": "Add first platform"
+    }
+  },
+  "users": {
+    "title": "Users",
+    "subtitle": "{{count}} users",
+    "addUser": "Add user",
+    "username": "Username",
+    "email": "Email",
+    "role": "Role",
+    "quotaUsage": "Quota Usage",
+    "quota": {
+      "5hours": "5 hours",
+      "thisWeek": "This week"
+    },
+    "monthlyLimit": "Monthly limit",
+    "status": "Status",
+    "active": "Active",
+    "disabled": "Disabled",
+    "frozen": "Frozen",
+    "freeze": {
+      "title": "Freeze",
+      "description": "Freeze user {{username}} — they will be unable to log in or use the API",
+      "submit": "Freeze user"
+    },
+    "unfreeze": {
+      "title": "Unfreeze",
+      "description": "Unfreeze user {{username}} — restore their access",
+      "submit": "Unfreeze user"
+    },
+    "resetPassword": {
+      "title": "Reset Password",
+      "description": "Set a new password for {{username}} (original password not required)",
+      "submit": "Reset Password",
+      "newPassword": "New Password",
+      "newPasswordPlaceholder": "Min 12 chars, 3 character classes",
+      "confirmPassword": "Confirm New Password",
+      "confirmPasswordPlaceholder": "Re-enter the new password",
+      "adminPassword": "Admin Password",
+      "adminPasswordPlaceholder": "Enter your admin password to confirm",
+      "adminPasswordHint": "Admin password confirmation required to prevent accidental operations",
+      "warning": "After reset, all the user's sessions, tokens, and API keys will be immediately invalidated. They will need to log in again.",
+      "validation": {
+        "newRequired": "Please enter a new password",
+        "minLength": "Password must be at least 12 characters",
+        "complexity": "Password must contain at least 3 of: uppercase, lowercase, digits, symbols",
+        "containsUsername": "Password cannot contain the username",
+        "mismatch": "Passwords do not match",
+        "adminRequired": "Please enter your admin password"
+      },
+      "toast": {
+        "success": "Password reset for {{username}}",
+        "failed": "Failed to reset password"
+      }
+    },
+    "freezeReason": "Reason",
+    "freezeReasonPlaceholder": "e.g. Suspicious activity, policy violation",
+    "exportCsv": "Export CSV",
+    "form": {
+      "username": "Username",
+      "emailOptional": "Email (optional)",
+      "initialPasswordOptional": "Initial password (optional)",
+      "autoGeneratePassword": "Leave empty to auto-generate",
+      "quota5h": "5-hour quota",
+      "quotaWeek": "Weekly quota"
+    },
+    "create": {
+      "title": "Add user",
+      "titleCreated": "User created",
+      "description": "Configure username, password and initial quota",
+      "descCreated": "Save the API Key and initial password — shown only once",
+      "submit": "Create",
+      "successMessage": "User {{username}} created",
+      "initialPassword": "Initial password",
+      "passwordHint": "(system-generated — inform the user)"
+    },
+    "edit": {
+      "title": "Edit {{username}}",
+      "enableAccount": "Enable account",
+      "enableHint": "Disabled users cannot access the API",
+      "used5h": "5h used",
+      "usedThisWeek": "This week"
+    },
+    "row": {
+      "copyKey": "Copy Key",
+      "edit": "Edit"
+    },
+    "delete": {
+      "confirmTitle": "Delete user",
+      "confirm": "Delete user {{username}}?"
+    },
+    "toast": {
+      "created": "Created",
+      "createFailed": "Create failed",
+      "saved": "Saved",
+      "saveFailed": "Save failed",
+      "deleted": "Deleted",
+      "deleteFailed": "Delete failed",
+      "noApiKey": "No API Key",
+      "copied": "Copied",
+      "frozen": "User frozen",
+      "unfrozen": "User unfrozen",
+      "freezeFailed": "Freeze/unfreeze failed"
+    },
+    "empty": {
+      "noMatch": "No matching users",
+      "noUsers": "No users yet",
+      "trySearch": "Try a different search term",
+      "addFirst": "Click top-right to add the first user"
+    }
+  },
+  "subscriptions": {
+    "title": "Subscriptions",
+    "subtitle": "Review user access requests for platforms/models",
+    "addPlan": "Add plan",
+    "planName": "Plan name",
+    "monthlyCredits": "Monthly credits",
+    "price": "Price",
+    "discount": "Discount",
+    "publish": "Publish",
+    "unpublish": "Unpublish",
+    "quota": "Quota",
+    "weekShort": "week",
+    "quota5h": "(5h)",
+    "quotaWeek": "(Week)",
+    "adminNote": "Admin note:",
+    "approve": "Approve",
+    "reject": "Reject",
+    "status": {
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    },
+    "badge": {
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "pending": "Pending"
+    },
+    "review": {
+      "approveTitle": "Approve request",
+      "rejectTitle": "Reject request",
+      "confirmApprove": "Confirm approval",
+      "confirmReject": "Confirm rejection",
+      "noteOptional": "Approval note (optional)",
+      "rejectReasonOptional": "Rejection reason (optional)",
+      "notePlaceholder": "Specify quota or notes",
+      "rejectReasonPlaceholder": "Specify rejection reason"
+    },
+    "toast": {
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "processFailed": "Processing failed"
+    },
+    "empty": {
+      "noPending": "No pending requests",
+      "noRelated": "No related requests",
+      "noSubmissions": "No subscription requests submitted",
+      "switchStatus": "Switch to another status to view"
+    }
+  },
+  "billing": {
+    "title": "Billing",
+    "subtitle": "Usage, cost and billing overview",
+    "walletBalance": "Wallet balance",
+    "topUp": "Top up",
+    "redeem": "Redeem",
+    "orders": "Orders",
+    "transactions": "Transactions",
+    "amount": "Amount",
+    "method": "Method",
+    "status": "Status",
+    "kpi": {
+      "totalTokens": "Total tokens",
+      "weekRequests": "Weekly requests",
+      "activeUsers": "Active users",
+      "activeProviders": "Active providers"
+    },
+    "trend": {
+      "title": "Daily request trend",
+      "last7Days": "Last 7 days"
+    },
+    "providerPie": {
+      "title": "Token share by platform",
+      "recentRequests": "Recent requests"
+    },
+    "modelUsage": {
+      "title": "Model usage top",
+      "totalTokens": "Total tokens"
+    },
+    "userRanking": {
+      "title": "User usage ranking",
+      "weekConsumption": "This week",
+      "noUsers": "No users"
+    }
+  },
+  "usage": {
+    "title": "Usage",
+    "subtitle": "Inspect usage by time, model and provider",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "last7Days": "Last 7 days",
+    "last30Days": "Last 30 days",
+    "thisMonth": "This month",
+    "custom": "Custom",
+    "tokens": "Tokens",
+    "requests": "Requests",
+    "cost": "Credits spent",
+    "byModel": "By model",
+    "byProvider": "By provider",
+    "byDay": "By day",
+    "export": "Export CSV",
+    "exportOk": "Exported",
+    "exportFailed": "Export failed",
+    "empty": "No usage yet",
+    "emptyHint": "No usage in the selected range",
+    "quota5h": "5h Quota",
+    "quotaWeek": "Weekly Quota",
+    "quotaMonth": "Monthly Quota",
+    "monthlyBudget": "Monthly Budget",
+    "walletBalance": "Wallet Balance",
+    "currentPlan": "Current Plan",
+    "noPlan": "No plan",
+    "chart": {
+      "title": "Usage Trend",
+      "requestsAxis": "Requests",
+      "costAxis": "Cost (credits)"
+    },
+    "modelBreakdown": "Model Breakdown",
+    "recentActivity": "Recent Activity",
+    "exportMyData": "Export my data (CSV)",
+    "status": {
+      "ok": "OK",
+      "clientError": "Client Error",
+      "serverError": "Server Error"
+    },
+    "provider": "Provider",
+    "promptTokens": "Prompt Tokens",
+    "completionTokens": "Completion Tokens",
+    "costCredits": "Cost",
+    "statusCode": "Status",
+    "timestamp": "Time",
+    "last90Days": "Last 90 days"
+  },
+  "apiKeys": {
+    "title": "API Keys",
+    "subtitle": "Issue API keys for users or yourself",
+    "newKey": "New key",
+    "keyName": "Name",
+    "namePlaceholder": "e.g. mobile-prod",
+    "nameRequired": "Please enter a key name",
+    "unnamed": "Unnamed",
+    "keyPrefix": "Prefix",
+    "monthlyTokens": "Monthly token limit",
+    "monthlyCredits": "Monthly credit limit",
+    "allowedModels": "Allowed models",
+    "expiresAt": "Expires at",
+    "revoke": "Revoke",
+    "rotate": "Rotate",
+    "show": "Show full",
+    "hide": "Hide full",
+    "secretTitle": "New key issued",
+    "secretHint": "Save it now — the full secret will not be shown again",
+    "intro": "Keys are stored as SHA-256 hashes; the plain secret is only returned at issue time. Each key has its own rate limit, quota, and allowed-model set.",
+    "empty": "No keys yet",
+    "emptyHint": "Click \"New key\" to issue your first API key",
+    "create": "Issue",
+    "createFailed": "Issue failed",
+    "revokeOk": "Revoked",
+    "revokeFailed": "Revoke failed",
+    "confirmRevokeTitle": "Revoke this key?",
+    "confirmRevokeBody": "Revoked keys stop working immediately and dependent clients will see 401/403 responses.",
+    "rotateOk": "Key rotated",
+    "rotateFailed": "Rotate failed",
+    "adminRotateHint": "Admins cannot rotate on behalf of a user — ask the user to issue a new key",
+    "filterByUser": "Filter by user",
+    "searchPlaceholder": "Search name / prefix",
+    "noMatch": "No matching keys",
+    "copiedToClipboard": "Copied to clipboard",
+    "lastUsed": "last used",
+    "created": "created",
+    "guide": {
+      "title": "How to use your Key",
+      "subtitlePrefix": "OpenAI-compatible protocol · base_url:",
+      "subtitleSuffix": "copy and run",
+      "step1": "Click \"New API Key\" in the top-right and copy the secret (shown only once)",
+      "step2": "Replace the demo Key below with your real key, pick a language and copy",
+      "step3": "First call /v1/models to see available models, then call /v1/chat/completions",
+      "demoKey": "Demo Key:",
+      "copyLabel": "Copy",
+      "copiedLabel": "Copied",
+      "endpointModels": "Available models",
+      "endpointChat": "Chat",
+      "endpointUsage": "Usage"
+    }
+  },
+  "logs": {
+    "title": "Audit log",
+    "subtitle": "Last 100 API requests",
+    "level": "Level",
+    "actor": "Actor",
+    "message": "Message",
+    "time": "Time",
+    "endpoint": "Endpoint",
+    "tokens": "Tokens",
+    "latency": "Latency",
+    "empty": {
+      "title": "No logs yet",
+      "description": "Logs will appear here after API calls"
+    }
+  },
+  "account": {
+    "title": "Plan & API Key",
+    "subtitle": "Admin credentials",
+    "role": {
+      "admin": "Admin",
+      "user": "User"
+    },
+    "adminKey": {
+      "title": "Your admin API Key",
+      "description": "Can be used to call protected admin endpoints directly (included in Authorization header)",
+      "notRecorded": "Not recorded — check user.api_key in the login response"
+    },
+    "minimax": {
+      "description": "Configure MiniMax platform Key and endpoint"
+    },
+    "nvidia": {
+      "description": "Configure NVIDIA Key and sync models",
+      "syncButton": "Sync NVIDIA models"
+    },
+    "saveAll": "Save all config",
+    "toast": {
+      "saved": "Saved",
+      "saveFailed": "Save failed",
+      "synced": "Synced",
+      "syncFailed": "Sync failed"
+    },
+    "plan": {
+      "title": "Plan & API Key",
+      "subtitle": "View your current plan, switch subscriptions, and manage API keys",
+      "tabPlan": "My plan",
+      "tabKey": "API Key",
+      "backToProfile": "Back to profile",
+      "currentPlan": "Current plan",
+      "freePlan": "Free plan",
+      "active": "Active",
+      "inactive": "Inactive",
+      "current": "Current",
+      "popular": "Popular",
+      "expiresAt": "Expires at",
+      "daysLeft": "Days left",
+      "daysLeftValue": "{{n}} days",
+      "autoRenew": "Auto-renew",
+      "creditsUsed": "Credits used this period",
+      "pendingDowngrade": "Will switch to {{name}} at the end of the period",
+      "perMonth": "/mo",
+      "noActiveDesc": "You don't have an active subscription yet. Subscribe to enjoy monthly credits and discounts.",
+      "planHint": "Need more? Upgrade your plan for higher monthly allowance and discounts.",
+      "viewWallet": "Open wallet to manage balance",
+      "availablePlans": "Available plans",
+      "noPlansAvailable": "No plans available right now — please contact the admin.",
+      "discount": "{{value}}% off",
+      "modelAccess": "Model access {{value}}",
+      "subscribe": "Subscribe",
+      "subscribeSuccess": "Subscription request submitted",
+      "subscribeFailed": "Subscribe failed",
+      "key": {
+        "intro": "Keys are stored as SHA-256 hashes; the plain secret is only returned at issue time. Each key has its own rate limit, quota, and allowed-model set.",
+        "searchPlaceholder": "Search name / prefix",
+        "newKey": "New key",
+        "keyName": "Name",
+        "namePlaceholder": "e.g. mobile-prod",
+        "nameRequired": "Please enter a key name",
+        "unnamed": "Unnamed",
+        "monthlyTokens": "Monthly token limit",
+        "monthlyCredits": "Monthly credit limit",
+        "allowedModels": "Allowed models",
+        "expiresAt": "Expires at",
+        "create": "Issue",
+        "createFailed": "Issue failed",
+        "rotate": "Rotate",
+        "rotateOk": "Key rotated",
+        "rotateFailed": "Rotate failed",
+        "revoke": "Revoke",
+        "revokeOk": "Revoked",
+        "revokeFailed": "Revoke failed",
+        "confirmRevokeTitle": "Revoke this key?",
+        "confirmRevokeBody": "Revoked keys stop working immediately and dependent clients will see 401/403 responses.",
+        "show": "Show full",
+        "hide": "Hide full",
+        "secretTitle": "New key issued",
+        "secretHint": "Save it now — the full secret will not be shown again",
+        "empty": "No keys yet",
+        "emptyHint": "Click \"New key\" to issue your first API key",
+        "noMatch": "No matching keys",
+        "created": "created"
+      }
+    },
+    "profile": {
+      "title": "Account",
+      "subtitle": "Manage your personal info and security",
+      "basicInfo": "Basic information",
+      "username": "Username",
+      "usernameHelp": "2-50 characters, must be unique",
+      "email": "Email",
+      "emailHelp": "Used for notifications and password recovery (optional)",
+      "createdAt": "Member since",
+      "userId": "User ID",
+      "save": "Save",
+      "saving": "Saving…",
+      "saved": "Saved",
+      "viewKey": "View API Key →",
+      "password": {
+        "title": "Change password",
+        "warning": "After this change, all your devices will be signed out and need to sign in again.",
+        "currentPassword": "Current password",
+        "newPassword": "New password",
+        "confirmPassword": "Confirm new password",
+        "show": "Show",
+        "hide": "Hide",
+        "submit": "Change password",
+        "submitting": "Changing…",
+        "success": "Password changed — please sign in again",
+        "strengthLabel": "Password strength",
+        "strength": {
+          "weak": "Weak",
+          "medium": "Medium",
+          "strong": "Strong",
+          "veryStrong": "Very strong"
+        },
+        "errors": {
+          "currentRequired": "Enter your current password",
+          "newRequired": "Enter a new password",
+          "confirmRequired": "Re-enter the new password",
+          "mismatch": "The two passwords don't match",
+          "sameAsOld": "The new password must differ from the current one",
+          "tooShort": "Password must be at least 12 characters",
+          "tooWeak": "Use 3 of: uppercase, lowercase, digits, symbols"
+        }
+      },
+      "errors": {
+        "usernameTooShort": "Username must be at least 2 characters",
+        "usernameTooLong": "Username must be at most 50 characters",
+        "usernameTaken": "That username is already taken",
+        "emailInvalid": "That email address is not valid",
+        "emailTaken": "That email is already in use",
+        "sessionExpired": "Your session has expired — please sign in again",
+        "rateLimited": "Too many attempts — please try again later",
+        "networkError": "Network error — check your connection",
+        "serverError": "Server error — please try again"
+      }
+    }
+  },
+  "pricing": {
+    "title": "Pricing",
+    "subtitle": "Manage per-model credit cost (per 1k tokens)",
+    "addPricing": "Add pricing",
+    "reset": "Reset",
+    "resetConfirm": "Reset {{name}} to official default pricing?",
+    "toast": {
+      "resetSuccess": "Reset to official pricing",
+      "updated": "Updated",
+      "created": "Created"
+    },
+    "stats": {
+      "totalModels": "Total models",
+      "custom": "Custom",
+      "free": "Free",
+      "paid": "Paid"
+    },
+    "searchPlaceholder": "Search models",
+    "empty": {
+      "title": "No models",
+      "description": "Sync model list on the Providers page first"
+    },
+    "table": {
+      "inputPer1k": "Input / 1k",
+      "outputPer1k": "Output / 1k"
+    },
+    "badge": {
+      "free": "Free",
+      "paid": "Paid",
+      "custom": "Custom",
+      "official": "Official"
+    },
+    "error": {
+      "required": "Platform / Model ID required"
+    },
+    "dialog": {
+      "editTitle": "Edit pricing · {{name}}",
+      "addTitle": "Add pricing",
+      "description": "Unit: credits consumed per 1k tokens"
+    },
+    "form": {
+      "modelId": "Model ID",
+      "inputPrice": "Input price (credits / 1k)",
+      "outputPrice": "Output price (credits / 1k)",
+      "notePlaceholder": "e.g. \"Internal test 50% off\""
+    }
+  },
+  "redeemCodes": {
+    "pageTitle": "Redeem Codes",
+    "subtitle": "Issue one-time credit or subscription codes",
+    "generate": "Generate codes",
+    "stats": {
+      "total": "Total",
+      "active": "Active",
+      "used": "Used",
+      "expired": "Expired"
+    },
+    "tab": {
+      "active": "Active",
+      "used": "Used",
+      "expired": "Expired",
+      "disabled": "Disabled"
+    },
+    "searchPlaceholder": "Search code / prefix",
+    "type": {
+      "credit": "Credit",
+      "creditDesc": "Add balance directly to user wallet",
+      "plan": "Subscription",
+      "planDesc": "Activate a plan for the user",
+      "planLabel": "Subscription",
+      "creditLabel": "Credit"
+    },
+    "status": {
+      "active": "Active",
+      "disabled": "Disabled",
+      "usedUp": "Used up",
+      "expired": "Expired"
+    },
+    "create": {
+      "title": "Generate redeem codes",
+      "titleGenerated": "Codes generated",
+      "description": "Issue one-time credit or subscription codes for users",
+      "descGenerated": "Save the codes below — the system won't show full values again",
+      "generate": "Generate",
+      "generated": "Generated"
+    },
+    "form": {
+      "count": "Count",
+      "prefix": "Code prefix",
+      "prefixPlaceholder": "e.g. GIFT / PROMO",
+      "creditValue": "Credit value",
+      "planIdOptional": "Plan ID (optional)",
+      "creditPlaceholder": "e.g. 100",
+      "planPlaceholder": "Leave empty for default plan",
+      "maxUses": "Max uses per code",
+      "expiresOptional": "Expiry (optional)"
+    },
+    "table": {
+      "code": "Code",
+      "type": "Type",
+      "value": "Value",
+      "usage": "Usage",
+      "statusExpiry": "Status / Expiry"
+    },
+    "revoke": {
+      "confirm": "Disable this code?",
+      "disable": "Disable"
+    },
+    "permanent": "Permanent",
+    "empty": {
+      "title": "No redeem codes",
+      "description": "Click \"Generate codes\" in the top-right to create your first batch"
+    },
+    "toast": {
+      "generated": "{{count}} codes generated",
+      "generateFailed": "Generation failed",
+      "loadFailed": "Load failed",
+      "disabled": "Disabled"
+    }
+  },
+  "wallet": {
+    "title": "Wallet & plans",
+    "subtitle": "Manage balance, top-ups, codes and subscriptions",
+    "balance": "Wallet balance",
+    "currentPlan": "Current plan",
+    "topUp": "Top up",
+    "redeem": "Redeem",
+    "amount": "Amount",
+    "customAmount": "Custom amount",
+    "confirmTopUp": "Confirm top up",
+    "topUpHint": "Submitting creates an order; the admin will review and credit the wallet. You can copy the order number for reference.",
+    "topUpSubmitted": "Top-up submitted",
+    "orderCreated": "Order created: {{no}}",
+    "topUpFailed": "Top-up failed",
+    "amountInvalid": "Please enter a valid amount",
+    "paymentMethod": "Payment method",
+    "method": {
+      "manual": "Manual",
+      "alipay": "Alipay",
+      "wechat": "WeChat",
+      "balance": "Wallet balance"
+    },
+    "code": "Redeem code",
+    "codePlaceholder": "Enter your code",
+    "codeRequired": "Please enter a code",
+    "freePlanRenewLabel": "Auto-renews monthly",
+    "freePlanRenewTooltip": "Free plan auto-renews monthly and grants credits",
+    "confirmRedeem": "Redeem now",
+    "redeemHint": "Codes are issued by the admin and credit instantly.",
+    "redeemOk": "Redeemed",
+    "redeemFailed": "Redemption failed",
+    "plans": "Available plans",
+    "plansHint": "Subscribe to enjoy monthly credits and discounts",
+    "popular": "Popular",
+    "perMonth": "/month",
+    "month": "month",
+    "discount": "{{value}}% off",
+    "modelAccess": "Access to {{value}}",
+    "subscribe": "Subscribe",
+    "free": "Free",
+    "activate": "Activate free",
+    "selectPaymentMethod": "Select payment method",
+    "confirmSubscribe": "Confirm subscription",
+    "insufficientBalance": "Insufficient balance. Please top up or choose another method",
+    "insufficient": "insufficient",
+    "balancePayHint": "The amount will be deducted from your wallet balance",
+    "onlinePayHint": "An order will be created for admin review",
+    "plan": "Plan",
+    "transactions": "Transactions",
+    "emptyTx": "No transactions yet",
+    "emptyTxHint": "Top-ups, redemptions and usage will appear here",
+    "colTime": "Time",
+    "colType": "Type",
+    "colAmount": "Amount",
+    "colNote": "Note",
+    "txTopup": "Top up",
+    "txRedeem": "Redeem",
+    "txUsage": "Usage",
+    "txRefund": "Refund",
+    "txBonus": "Bonus",
+    "txOther": "Other",
+    "subscribeSuccess": "Subscription request submitted",
+    "subscribeFailed": "Subscription failed",
+    "currentPlanBadge": "Current plan",
+    "planExpiresAt": "Expires: {{date}}",
+    "lowBalance": {
+      "message": "Your balance is running low ({{balance}} credits). Top up to keep using the API.",
+      "topUp": "Top up",
+      "dismiss": "Dismiss"
+    }
+  },
+  "timeAgo": {
+    "justNow": "just now",
+    "minutesAgo": "{{m}}m ago",
+    "hoursAgo": "{{h}}h ago",
+    "daysAgo": "{{d}}d ago"
+  },
+  "plans": {
+    "title": "Plans",
+    "subtitle": "Manage subscription tiers, pricing and quotas",
+    "searchPlaceholder": "Search code / name",
+    "col": {
+      "code": "Code",
+      "name": "Name",
+      "monthlyPrice": "Price (credits)",
+      "discountRate": "Discount",
+      "monthlyCredits": "Monthly credits",
+      "rpm": "RPM",
+      "subscribers": "Subscribers"
+    },
+    "form": {
+      "code": "Code",
+      "name": "Name",
+      "monthlyPrice": "Monthly price (credits)",
+      "monthlyCredits": "Monthly credits",
+      "discountRate": "Discount rate (0-1)",
+      "maxApiKeys": "Max API keys",
+      "maxConcurrent": "Max concurrent",
+      "rateLimitRpm": "Rate limit (RPM)",
+      "rateLimitTpm": "Rate limit (TPM)",
+      "sortOrder": "Sort order",
+      "isActive": "Active"
+    },
+    "create": {
+      "title": "New plan",
+      "description": "Create a new subscription tier"
+    },
+    "edit": {
+      "title": "Edit plan",
+      "description": "Update plan settings. Code cannot be changed."
+    },
+    "delete": {
+      "title": "Delete plan",
+      "description": "Are you sure you want to disable {{name}}?",
+      "confirmBody": "This will soft-delete the plan \"{{name}}\" ({{code}}). Plans with active subscribers cannot be deleted."
+    },
+    "validation": {
+      "nameRequired": "Plan name is required",
+      "nameTooLong": "Name must be 100 chars or less",
+      "codeInvalid": "Code must be 3-50 alphanumeric characters",
+      "discountRateInvalid": "Discount rate must be between 0 and 1"
+    },
+    "toast": {
+      "created": "Plan created",
+      "updated": "Plan updated",
+      "deleted": "Plan deleted",
+      "loadFailed": "Failed to load plans"
+    },
+    "empty": {
+      "title": "No plans",
+      "description": "Click \"New plan\" to create the first subscription tier"
+    }
+  },
+  "promoCodes": {
+    "title": "Promo Codes",
+    "subtitle": "Issue and manage promotional codes",
+    "searchPlaceholder": "Search code",
+    "unlimited": "Unlimited",
+    "never": "Never",
+    "col": {
+      "code": "Code",
+      "value": "Value",
+      "usage": "Uses",
+      "expiresAt": "Expires"
+    },
+    "status": {
+      "active": "Active",
+      "exhausted": "Exhausted",
+      "expired": "Expired",
+      "revoked": "Revoked"
+    },
+    "type": {
+      "bonusCredits": "Bonus credits",
+      "discountPercent": "Discount (%)",
+      "discountFixed": "Fixed discount"
+    },
+    "form": {
+      "type": "Type",
+      "value": "Value",
+      "maxUses": "Max uses",
+      "maxUsesHint": "0 = unlimited",
+      "perUserLimit": "Per-user limit",
+      "expiresAt": "Expires at",
+      "expiresHint": "Leave empty for no expiry"
+    },
+    "create": {
+      "title": "New promo code",
+      "titleCreated": "Promo code created",
+      "description": "The system will generate a random code automatically",
+      "descCreated": "Save the code below — it will not be shown again",
+      "generate": "Generate",
+      "warningOnce": "This code will not be shown again. Copy it now."
+    },
+    "revoke": {
+      "title": "Revoke promo code",
+      "description": "Soft-revoke this code so it can no longer be used",
+      "body": "Revoke promo code {{code}}? It will be deactivated but the record is kept.",
+      "confirm": "Revoke"
+    },
+    "toast": {
+      "created": "Promo code created",
+      "createFailed": "Create failed",
+      "revoked": "Revoked",
+      "loadFailed": "Failed to load promo codes"
+    },
+    "empty": {
+      "title": "No promo codes",
+      "description": "Click \"New promo code\" to generate the first code"
+    }
+  },
+  "notFound": {
+    "title": "Page not found",
+    "subtitle": "The page you're looking for doesn't exist or has been moved.",
+    "backToAdmin": "Back to admin",
+    "backToChat": "Back to chat"
+  },
+  "errors": {
+    "network": "Network error, please try again",
+    "unauthorized": "Not signed in or session expired",
+    "sessionExpired": "Session expired, please sign in again",
+    "forbidden": "No permission for this action",
+    "notFound": "Resource not found",
+    "server": "Server error",
+    "sseParse": "Failed to parse SSE data: {{data}}",
+    "upstream": "Upstream returned an error",
+    "boundaryTitle": "Something went wrong",
+    "boundaryBody": "The app hit an unexpected error and has been reported automatically. Please reload the page or go back and try again.",
+    "reload": "Reload page",
+    "retry": "Try again"
+  },
+  "onboarding": {
+    "welcome": {
+      "title": "Welcome to the API Hub!",
+      "desc": "Let's show you around. This quick tour takes less than a minute."
+    },
+    "sidebar": {
+      "title": "Sidebar",
+      "desc": "This is where you'll find Chat, API Keys, Billing, and your account settings."
+    },
+    "modelPicker": {
+      "title": "Model Picker",
+      "desc": "Choose which AI model to talk to here. We support 300+ models from 12+ providers."
+    },
+    "userMenu": {
+      "title": "Your Account",
+      "desc": "Your API keys and account settings live here. Manage keys, view usage, and update your profile."
+    },
+    "done": {
+      "title": "You're all set!",
+      "desc": "You can replay this tour any time from the help menu."
+    },
+    "next": "Next",
+    "prev": "Back",
+    "skip": "Skip",
+    "finish": "Get started"
+  },
+  "help": {
+    "title": "Help Center",
+    "subtitle": "Find answers to common questions",
+    "searchPlaceholder": "Search questions…",
+    "quickLinks": "Quick links",
+    "replayTour": "Replay tour",
+    "openGuide": "Integration guide",
+    "viewFaq": "View FAQ",
+    "versionInfo": "Version info",
+    "version": "Version",
+    "env": "Environment",
+    "role": "Role",
+    "noResults": "No matching questions",
+    "faq": {
+      "quotas": {
+        "q": "How do quotas work?",
+        "a": "Quotas limit how many credits or tokens you can consume over different windows: 5-hour, weekly, and monthly. Each window resets independently. Your admin can also set a hard budget cap. When a window resets, your usage counter goes back to zero but your budget cap does not."
+      },
+      "quotaHit": {
+        "q": "What happens when I hit my quota?",
+        "a": "Once you reach the limit for a given window, new API requests will be rejected with a 429 (rate limit) or 402 (payment required) status code. You'll need to wait for the window to reset, or ask your admin to increase your quota. You can check your current usage on the Usage page."
+      },
+      "billing": {
+        "q": "How is billing calculated?",
+        "a": "Each model has a per-1k-token price for input and output tokens. When you make an API call, we count the input tokens (your prompt) and output tokens (the model's reply) and multiply by the respective price. The total is deducted from your wallet balance in credits. Some plans offer discounts on specific models."
+      },
+      "errorCodes": {
+        "q": "What do error codes mean?",
+        "a": "401 — Your API key or session is invalid or expired. Re-login or rotate your key. 402 — Insufficient balance or quota exceeded. Top up your wallet or wait for quota reset. 403 — You don't have permission to access this resource (e.g., model not in your allowed list). 429 — Rate limit exceeded. Too many requests in a short period; wait and retry. 500 — Internal server error on our side. Please retry or contact support."
+      },
+      "channels": {
+        "q": "How do channels work?",
+        "a": "Channels are the upstream connections to AI providers. Each channel has a provider, a weight (for load balancing), and a cooldown period. When a request comes in, the system picks a healthy channel based on weight. If a channel fails, it enters cooldown and traffic shifts to other channels automatically (failover)."
+      },
+      "rotateKey": {
+        "q": "How do I rotate my API key?",
+        "a": "Go to your Account page, find the API key you want to rotate, and click the Rotate button. A new key will be generated and the old one will be immediately invalidated. Make sure to update all your integrations with the new key before rotating."
+      },
+      "usageHistory": {
+        "q": "Where can I see my usage history?",
+        "a": "Navigate to the Usage page from the sidebar. You can filter by time range (today, last 7 days, last 30 days, this month, or custom), and break down usage by model, provider, or day. You can also export your usage data as CSV."
+      },
+      "contactSupport": {
+        "q": "How do I contact support?",
+        "a": "If you can't find an answer here, reach out to your administrator directly. If you are the administrator, check the backend logs at /admin/logs for detailed error information, or consult the project documentation."
+      }
+    }
+  },
+  "integration": {
+    "title": "Integration Guide",
+    "subtitle": "Start using the API in minutes",
+    "baseUrl": "API Base URL",
+    "yourApiKey": "Your API Key",
+    "keyMasked": "Your key is masked for security. Copy it from the API Keys page.",
+    "noKey": "You don't have an API key yet. Ask your admin to create one.",
+    "curlExample": "cURL Example",
+    "pythonExample": "Python (OpenAI SDK)",
+    "nodeExample": "Node.js (OpenAI SDK)",
+    "copyCode": "Copy code",
+    "viewDocs": "View OpenAI SDK docs",
+    "tip": "This endpoint is fully compatible with the OpenAI SDK. Just change the base URL and use your API key.",
+    "getStarted": "Get started"
+  },
+  "channels": {
+    "title": "Channels",
+    "subtitle": "Manage provider API channels for failover and load balancing",
+    "addChannel": "New channel",
+    "filterProvider": "All providers",
+    "filterStatus": "All statuses",
+    "status": {
+      "active": "Active",
+      "cooldown": "Cooldown",
+      "inactive": "Inactive",
+      "failed": "Failed"
+    },
+    "table": {
+      "name": "Name",
+      "provider": "Provider",
+      "baseUrl": "Base URL",
+      "weight": "Weight",
+      "status": "Status",
+      "lastHealth": "Last health check",
+      "lastError": "Last error",
+      "cooldownUntil": "Cooldown until",
+      "actions": "Actions"
+    },
+    "form": {
+      "provider": "Provider",
+      "name": "Name",
+      "namePlaceholder": "e.g. US-east-key-1",
+      "baseUrl": "Base URL",
+      "baseUrlHint": "Must be a public URL (SSRF-validated server-side)",
+      "apiKey": "API Key",
+      "apiKeyChange": "Leave empty to keep unchanged",
+      "apiKeyRequired": "API Key is required for new channels",
+      "weight": "Weight",
+      "weightHint": "Higher weight = more traffic (default 100)",
+      "isActive": "Active"
+    },
+    "create": {
+      "title": "New channel",
+      "description": "Add a provider API channel. It will be tested automatically after creation.",
+      "submit": "Create & test"
+    },
+    "edit": {
+      "title": "Edit channel",
+      "description": "Update channel configuration. Leave API key empty to keep the current key."
+    },
+    "delete": {
+      "title": "Delete channel",
+      "confirm": "Delete channel \"{{name}}\"? This cannot be undone. In-flight requests using this channel will fail."
+    },
+    "actions": {
+      "test": "Test",
+      "edit": "Edit",
+      "toggleActive": "Toggle active",
+      "resetCooldown": "Reset cooldown",
+      "delete": "Delete"
+    },
+    "toast": {
+      "created": "Channel created",
+      "createFailed": "Create failed",
+      "updated": "Channel updated",
+      "updateFailed": "Update failed",
+      "deleted": "Channel deleted",
+      "deleteFailed": "Delete failed",
+      "testOk": "Channel test passed",
+      "testFailed": "Channel test failed",
+      "cooldownReset": "Cooldown reset",
+      "cooldownResetFailed": "Failed to reset cooldown",
+      "toggled": "Channel toggled",
+      "toggleFailed": "Toggle failed",
+      "loadFailed": "Failed to load channels"
+    },
+    "empty": {
+      "title": "No channels configured",
+      "description": "Add a channel to start routing API requests to provider endpoints"
+    },
+    "never": "Never",
+    "none": "—",
+    "clickToEditWeight": "Click to edit weight"
+  },
+  "navOps": {
+    "label": "Billing & Operations",
+    "orders": "Orders",
+    "walletAdjust": "Wallet Adjust",
+    "auditLogs": "Audit Logs",
+    "plans": "Plans",
+    "promoCodes": "Promo Codes",
+    "channels": "Channels",
+    "settings": "Settings"
+  },
+  "adminOrders": {
+    "title": "Order Management",
+    "subtitle": "Review, approve, reject and refund top-up orders",
+    "filter": {
+      "allStatus": "All status",
+      "pending": "Pending",
+      "pendingReview": "Pending Review",
+      "paid": "Paid",
+      "failed": "Failed / Rejected",
+      "refunded": "Refunded"
+    },
+    "table": {
+      "orderId": "Order ID",
+      "user": "User",
+      "amount": "Amount",
+      "credits": "Credits",
+      "status": "Status",
+      "paymentMethod": "Payment",
+      "createdAt": "Created"
+    },
+    "badge": {
+      "pending": "Pending",
+      "pending_review": "Pending Review",
+      "paid": "Paid",
+      "failed": "Failed",
+      "refunded": "Refunded"
+    },
+    "action": {
+      "approve": "Approve",
+      "reject": "Reject",
+      "refund": "Refund",
+      "detail": "Detail"
+    },
+    "dialog": {
+      "approveTitle": "Approve order",
+      "approveDesc": "Approve order #{{id}} and credit the user's wallet",
+      "rejectTitle": "Reject order",
+      "rejectDesc": "Reject order #{{id}} — no credits will be issued",
+      "refundTitle": "Refund order",
+      "refundDesc": "Refund order #{{id}} — credits will be debited from the user's wallet",
+      "noteLabel": "Note (optional)",
+      "notePlaceholder": "Admin note…",
+      "reasonLabel": "Reason (optional)",
+      "reasonPlaceholder": "Rejection reason…",
+      "refundReasonPlaceholder": "Refund reason…",
+      "confirmApprove": "Confirm approve",
+      "confirmReject": "Confirm reject",
+      "confirmRefund": "Confirm refund",
+      "usdtRefundTitle": "USDT refund is irreversible",
+      "usdtRefundDesc": "This action only debits the user's local credits — it does not initiate an on-chain USDT refund. Please confirm you have arranged the on-chain refund with the user.",
+      "refundConfirmTitle": "Refund is irreversible",
+      "refundConfirmDesc": "Refunding debits the user's local credits and may revoke any subscription this order activated. Please verify the order and user details before proceeding.",
+      "refundAck": "I understand this action is irreversible",
+      "usdtRefundAck": "I understand the USDT will not be automatically returned"
+    },
+    "detail": {
+      "title": "Order detail",
+      "orderNo": "Order No",
+      "userId": "User ID",
+      "username": "Username",
+      "amount": "Amount (CNY)",
+      "credits": "Credits",
+      "bonusCredits": "Bonus credits",
+      "status": "Status",
+      "paymentMethod": "Payment method",
+      "promoCode": "Promo code",
+      "note": "Note",
+      "paidAt": "Paid at",
+      "createdAt": "Created at"
+    },
+    "toast": {
+      "approved": "Order approved",
+      "rejected": "Order rejected",
+      "refunded": "Order refunded",
+      "failed": "Operation failed"
+    },
+    "empty": {
+      "title": "No orders",
+      "description": "No orders match the current filters"
+    },
+    "loadMore": "Load more"
+  },
+  "orders": {
+    "exportCsv": "Export CSV"
+  },
+  "auditLogs": {
+    "exportCsv": "Export CSV"
+  },
+  "adminWalletAdjust": {
+    "title": "Wallet Adjustment",
+    "subtitle": "Credit or debit a user's wallet with full audit trail",
+    "selectUser": "Select user",
+    "searchUser": "Search users…",
+    "currentBalance": "Current balance",
+    "totalRecharged": "Total recharged",
+    "totalConsumed": "Total consumed",
+    "form": {
+      "amount": "Amount",
+      "amountHint": "Positive to credit, negative to debit",
+      "amountPlaceholder": "e.g. 100 or -50",
+      "reason": "Reason",
+      "reasonPlaceholder": "e.g. Compensation for service outage",
+      "submit": "Adjust wallet"
+    },
+    "confirm": {
+      "title": "Confirm wallet adjustment",
+      "creditDesc": "Credit user {{username}}'s wallet by {{amount}} credits?",
+      "debitDesc": "Debit user {{username}}'s wallet by {{amount}} credits?",
+      "debitWarning": "This will reduce the user's balance. This action cannot be undone.",
+      "reasonLabel": "Reason"
+    },
+    "result": {
+      "success": "Wallet adjusted successfully",
+      "newBalance": "New balance"
+    },
+    "transactions": {
+      "title": "Recent transactions",
+      "type": "Type",
+      "amount": "Amount",
+      "balanceAfter": "Balance after",
+      "note": "Note",
+      "createdAt": "Time"
+    },
+    "toast": {
+      "adjusted": "Wallet adjusted",
+      "adjustFailed": "Adjustment failed",
+      "selectUserFirst": "Please select a user first"
+    },
+    "empty": {
+      "title": "No transactions",
+      "description": "Select a user to view their wallet transactions"
+    }
+  },
+  "adminAuditLogs": {
+    "title": "Audit Logs",
+    "subtitle": "Track all admin and system actions",
+    "filter": {
+      "allActions": "All actions",
+      "allTargets": "All targets",
+      "dateFrom": "From",
+      "dateTo": "To",
+      "clearFilters": "Clear filters"
+    },
+    "actions": {
+      "login": "Login",
+      "logout": "Logout",
+      "init": "Init",
+      "changePassword": "Change password",
+      "createUser": "Create user",
+      "updateUser": "Update user",
+      "deleteUser": "Delete user",
+      "setPlan": "Set plan",
+      "walletAdjust": "Wallet adjust",
+      "orderApprove": "Order approve",
+      "orderReject": "Order reject",
+      "orderRefund": "Order refund",
+      "createChannel": "Create channel",
+      "updateChannel": "Update channel",
+      "deleteChannel": "Delete channel",
+      "revokeApiKey": "Revoke API key",
+      "promoCreate": "Promo create",
+      "redeemBatchCreate": "Redeem batch create",
+      "syncModels": "Sync models",
+      "updateConfig": "Update config",
+      "updateModelMap": "Update model map"
+    },
+    "targets": {
+      "user": "User",
+      "order": "Order",
+      "channel": "Channel",
+      "settings": "Settings",
+      "promo_code": "Promo code",
+      "redeem_code": "Redeem code",
+      "api_key": "API key",
+      "models": "Models"
+    },
+    "table": {
+      "timestamp": "Timestamp",
+      "actor": "Actor",
+      "action": "Action",
+      "target": "Target",
+      "ipAddress": "IP",
+      "details": "Details"
+    },
+    "detail": {
+      "title": "Log detail",
+      "logId": "Log ID",
+      "actorType": "Actor type",
+      "actorId": "Actor ID",
+      "action": "Action",
+      "targetType": "Target type",
+      "targetId": "Target ID",
+      "ipAddress": "IP address",
+      "createdAt": "Timestamp",
+      "detailsJson": "Details (JSON)"
+    },
+    "export": {
+      "button": "Export CSV",
+      "filename": "audit-logs"
+    },
+    "empty": {
+      "title": "No audit logs",
+      "description": "No logs match the current filters"
+    },
+    "loadMore": "Load more"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "markAllRead": "Mark all as read",
+    "empty": "No notifications yet",
+    "types": {
+      "orderApproved": "Order approved",
+      "orderRejected": "Order rejected",
+      "orderRefunded": "Order refunded",
+      "lowBalance": "Low balance",
+      "subscriptionExpiring": "Subscription expiring",
+      "subscriptionExpired": "Subscription expired",
+      "adminAnnouncement": "Admin announcement"
+    },
+    "relativeTime": {
+      "justNow": "just now",
+      "minutesAgo": "{{n}}m ago",
+      "hoursAgo": "{{n}}h ago",
+      "daysAgo": "{{n}}d ago"
+    }
+  },
+  "payment": {
+    "title": "Pay for your order",
+    "orderNo": "Order No",
+    "amount": "Amount",
+    "credits": "Credits",
+    "selectProvider": "Payment provider",
+    "payNow": "Pay now",
+    "comingSoon": "Coming soon",
+    "loadProvidersFailed": "Failed to load payment providers. Please retry.",
+    "hint": "You will be redirected to the provider's secure checkout page. After payment, you will be returned here.",
+    "noCheckoutUrl": "Failed to create checkout session",
+    "payFailed": "Payment failed, please try again",
+    "success": "Payment successful! Your wallet has been credited.",
+    "cancelled": "Payment was cancelled",
+    "successBanner": "Payment confirmed! Your wallet has been credited with the purchased credits.",
+    "pollTimeoutTitle": "Payment is being confirmed",
+    "pollTimeoutBanner": "Payment has been received. Your balance will update shortly — please refresh the page.",
+    "recheck": "Re-check",
+    "providers": {
+      "stripe": "Credit Card (Stripe)",
+      "alipay": "Alipay",
+      "wechat": "WeChat Pay",
+      "usdt": "USDT (Crypto)"
+    },
+    "usdtAmount": "Amount to send",
+    "usdtAddress": "Deposit address",
+    "usdtNetwork": "Network",
+    "usdtCopy": "Copy address",
+    "usdtCopied": "Address copied",
+    "usdtHint": "Send exactly the amount shown to the deposit address on the selected network. The payment is confirmed after on-chain verification (usually within a few minutes).",
+    "usdtWaiting": "Waiting for on-chain confirmation…",
+    "usdtTimeout": "Payment not yet detected. If you already sent, the confirmation will arrive shortly.",
+    "usdtAmountMissing": "Amount unavailable",
+    "usdtAmountMissingHint": "Could not retrieve the payable amount from the payment service. Please close and retry, or contact support.",
+    "usdtTimeoutTitle": "On-chain confirmation timed out",
+    "usdtTimeoutDesc": "Your order {{orderNo}} has been recorded. On-chain confirmation may take longer. Please keep this page open or check the Wallet page later. If it still hasn't arrived after 30 minutes, please contact support with your order number.",
+    "usdtTimeoutRetry": "Keep waiting",
+    "copyFailed": "Copy failed"
+  },
+  "subscriptionMgmt": {
+    "title": "My Subscription",
+    "noActive": "No active subscription",
+    "noActiveDesc": "Subscribe to a plan to enjoy monthly credits and discounts",
+    "currentPlan": "Current plan",
+    "planName": "Plan",
+    "expiresAt": "Expires at",
+    "creditsUsed": "Credits used",
+    "autoRenew": "Auto-renew",
+    "autoRenewOn": "On",
+    "autoRenewOff": "Off",
+    "pendingDowngrade": "Pending downgrade",
+    "pendingDowngradeDesc": "Will switch to {{name}} at period end",
+    "upgrade": "Upgrade",
+    "downgrade": "Downgrade",
+    "cancel": "Cancel auto-renewal",
+    "renew": "Renew now",
+    "upgradeTitle": "Upgrade plan",
+    "downgradeTitle": "Downgrade plan",
+    "selectPlan": "Select a plan",
+    "proratedRefund": "Prorated refund",
+    "newPrice": "New plan price",
+    "netCost": "Net cost",
+    "downgradeNote": "Downgrade takes effect at period end. No immediate change.",
+    "cancelConfirm": "Are you sure you want to cancel auto-renewal? Your subscription will remain active until its expiry date.",
+    "cancelSuccess": "Auto-renewal cancelled",
+    "upgradeSuccess": "Subscription upgraded",
+    "downgradeSuccess": "Downgrade scheduled",
+    "renewSuccess": "Subscription renewed",
+    "actionFailed": "Action failed",
+    "autoRecharge": "Auto-recharge",
+    "autoRechargeDesc": "Automatically create a top-up order when balance drops below threshold",
+    "autoRechargeEnabled": "Enable auto-recharge",
+    "autoRechargeThreshold": "Threshold (credits)",
+    "autoRechargeThresholdHint": "Trigger when balance falls below this value",
+    "autoRechargeAmount": "Recharge amount (credits)",
+    "autoRechargeAmountHint": "Amount of credits to order when triggered",
+    "saveSettings": "Save settings",
+    "settingsSaved": "Auto-recharge settings saved",
+    "settingsFailed": "Failed to save settings",
+    "perMonth": "/month",
+    "credits": "credits"
+  },
+  "gdpr": {
+    "title": "Data Management",
+    "export": "Export my data",
+    "exportDesc": "Download a JSON copy of all your data (profile, usage, wallet, conversations, API keys, etc.)",
+    "exportSuccess": "Data exported successfully",
+    "exportFailed": "Data export failed",
+    "exportRateLimited": "Only one export allowed per hour",
+    "delete": "Delete my account",
+    "deleteDesc": "Your account will be deactivated and data permanently erased after 30 days",
+    "confirmDelete": "Are you sure you want to delete your account? This action cannot be undone.",
+    "passwordRequired": "Please enter your password to confirm deletion",
+    "deleteSuccess": "Account deleted",
+    "deleteFailed": "Deletion failed"
+  },
+  "budgetSection": {
+    "setBudget": "Set monthly budget",
+    "setBudgetDesc": "Set a maximum monthly spending limit (credits). Requests will be rejected once exceeded.",
+    "budgetPlaceholder": "Enter budget amount",
+    "budgetSaved": "Monthly budget saved",
+    "budgetFailed": "Failed to save budget"
+  },
+  "modelPool": {
+    "title": "Model Pool",
+    "subtitle": "Manage your custom model endpoints",
+    "tabPools": "Pools",
+    "tabKeys": "Unified Keys",
+    "addModel": "Add Model",
+    "editModel": "Edit Model",
+    "name": "Name",
+    "providerType": "Provider Type",
+    "apiBase": "API Base",
+    "apiKey": "API Key",
+    "modelName": "Model Name",
+    "maxTokens": "Max Tokens",
+    "maxTokensHint": "0 = unlimited",
+    "priority": "Priority",
+    "priorityHint": "0 = highest priority",
+    "used": "Used",
+    "unlimited": "Unlimited",
+    "status": "Status",
+    "active": "Active",
+    "cooldown": "Cooldown",
+    "exhausted": "Exhausted",
+    "moveUp": "Move up",
+    "moveDown": "Move down",
+    "noPools": "No models yet — click top-right to add",
+    "noKeys": "No keys yet — click top-right to generate",
+    "generateKey": "Generate New Key",
+    "keyOnceWarning": "Keep this key safe — it will not be shown again after closing",
+    "keyPrefix": "Key prefix",
+    "createdAt": "Created",
+    "lastUsedAt": "Last used",
+    "deleteConfirm": "Are you sure you want to delete?",
+    "deleteKeyConfirm": "Delete this key? Requests using this key will fail after deletion.",
+    "copyKey": "Copy key",
+    "copied": "Copied",
+    "usageGuide": "Usage: pass the unified key as the API Key to /v1/chat/completions. The system routes by priority and seamlessly switches when a pool's tokens are exhausted."
+  }
+}

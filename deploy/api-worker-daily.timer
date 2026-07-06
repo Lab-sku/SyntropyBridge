@@ -1,0 +1,11 @@
+[Unit]
+Description=Run API daily worker at 3AM
+Requires=api-worker-daily.service
+
+[Timer]
+OnCalendar=*-*-* 03:00:00
+Persistent=true
+RandomizedDelaySec=300
+
+[Install]
+WantedBy=timers.target

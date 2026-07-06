@@ -1,0 +1,57 @@
+# Version control
+.git
+.gitignore
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.egg-info
+.pytest_cache
+.coverage
+htmlcov
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Environment files — never bake secrets into images
+.env
+.env.*
+!.env.production.example
+
+# Frontend build artifacts (rebuilt inside Docker)
+frontend/node_modules
+frontend/dist
+
+# Data and logs
+data/
+*.log
+uvicorn.out.log
+uvicorn.err.log
+
+# IDE / editor
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Deployment files (not needed inside the image)
+deploy/
+docker-compose*.yml
+start.bat
+
+# Documentation (keep image small)
+*.md
+!README.md
+docs/
+
+# Tests, scripts, and analysis artifacts (not needed at runtime)
+backend/tests/
+scripts/
+.qoder/
+PROJECT_DEEP_ANALYSIS.md

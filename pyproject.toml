@@ -1,0 +1,7 @@
+[tool.pytest.ini_options]
+# Make `import backend.*` work without needing PYTHONPATH=..
+# pytest collects from backend/tests/ which has no __init__.py;
+# adding the repo root to sys.path lets the package resolve.
+pythonpath = ["."]
+testpaths = ["backend/tests"]
+addopts = "-ra --tb=short"

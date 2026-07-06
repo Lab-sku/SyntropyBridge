@@ -1,0 +1,44 @@
+[Unit]
+Description=API Zhongzhuan Platform
+Documentation=file:///opt/api-zhuanzhuan/deploy/DEPLOYMENT.md
+After=network.target
+StartLimitBurst=3
+StartLimitIntervalSec=60
+
+[Service]
+Type=simple
+User=api
+Group=api
+WorkingDirectory=/opt/api-zhuanzhuan
+EnvironmentFile=/opt/api-zhuanzhuan/.env.production
+Environment="DATABASE_PATH=/var/lib/api-zhuanzhuan/data.db"
+ExecStart=/opt/api-zhuanzhuan/venv/bin/uvicorn backend.main:app --host 127.0.0.1 --port 8000 --workers 1
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=api-zhuanzhuan
+
+# Security hardening
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/api-zhuanzhuan
+PrivateTmp=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictNamespaces=true
+RestrictRealtime=true
+MemoryDenyWriteExecute=true
+SystemCallFilter=@system-service
+SystemCallFilter=~@mount @reboot @swap
+LimitNOFILE=65536
+
+# Resource limits (prevent runaway memory / CPU under load spikes)
+MemoryMax=1G
+CPUQuota=200%
+TasksMax=512
+
+[Install]
+WantedBy=multi-user.target

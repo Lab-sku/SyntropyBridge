@@ -1,0 +1,11 @@
+[Unit]
+Description=Run API hourly worker (every hour)
+Requires=api-worker-hourly.service
+
+[Timer]
+OnCalendar=*-*-* *:30:00
+Persistent=true
+RandomizedDelaySec=300
+
+[Install]
+WantedBy=timers.target

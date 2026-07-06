@@ -1,0 +1,36 @@
+[Unit]
+Description=API Zhongzhuan - Daily Worker (subscription expiry / renewals / soft-delete purge / credits sweep / Stripe recon)
+After=network.target
+StartLimitIntervalSec=300
+StartLimitBurst=3
+
+[Service]
+Type=oneshot
+User=api
+Group=api
+WorkingDirectory=/opt/api-zhuanzhuan
+EnvironmentFile=/opt/api-zhuanzhuan/.env.production
+Environment="DATABASE_PATH=/var/lib/api-zhuanzhuan/data.db"
+ExecStart=/opt/api-zhuanzhuan/venv/bin/python -c "from backend.services.subscription_service import SubscriptionService; SubscriptionService.run_daily_jobs()"
+TimeoutStartSec=300
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=api-zhuanzhuan-worker-daily
+Restart=on-failure
+RestartSec=60
+
+# Security hardening (consistent with api.service)
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/api-zhuanzhuan
+PrivateTmp=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictNamespaces=true
+RestrictRealtime=true
+MemoryDenyWriteExecute=true
+SystemCallFilter=@system-service
+SystemCallFilter=~@mount @reboot @swap
+LimitNOFILE=65536

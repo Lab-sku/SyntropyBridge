@@ -1,0 +1,61 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+*.egg-info/
+dist/
+build/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Environment
+.env
+.env.local
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build
+frontend/dist
+frontend/node_modules
+
+# Test
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Ad-hoc artifacts (root-level scratch outputs, AI reports, one-off diagnostics)
+/out.txt
+/test_output.txt
+/routes.txt
+/*_REPORT*.md
+/check_*.py
+/list_*.py
+/test_*.py
+
+# Misc
+*.bak
+*.tmp
+.cache/
+/nul

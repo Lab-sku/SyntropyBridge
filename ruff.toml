@@ -1,0 +1,21 @@
+# Ruff config for API 中转平台
+# Matches the existing codebase style; adjust as needed.
+
+line-length = 100
+target-version = "py311"
+
+[lint]
+select = ["E", "F", "I"]
+ignore = [
+    "E501",   # line length is handled by the formatter
+    "E402",   # module-level import not at top of file (common in backend/main.py due to middleware ordering)
+]
+
+[lint.isort]
+combine-as-imports = true
+known-first-party = ["backend"]
+
+[format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false

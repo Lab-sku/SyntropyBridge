@@ -1,0 +1,36 @@
+[Unit]
+Description=API Zhongzhuan - Hourly Worker (expired orders / pending_payment / upcoming renewals / reservation sweep)
+After=network.target
+StartLimitIntervalSec=300
+StartLimitBurst=3
+
+[Service]
+Type=oneshot
+User=api
+Group=api
+WorkingDirectory=/opt/api-zhuanzhuan
+EnvironmentFile=/opt/api-zhuanzhuan/.env.production
+Environment="DATABASE_PATH=/var/lib/api-zhuanzhuan/data.db"
+ExecStart=/opt/api-zhuanzhuan/venv/bin/python -c "from backend.services.subscription_service import SubscriptionService; SubscriptionService.run_hourly_jobs()"
+TimeoutStartSec=300
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=api-zhuanzhuan-worker-hourly
+Restart=on-failure
+RestartSec=60
+
+# Security hardening (consistent with api.service)
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/api-zhuanzhuan
+PrivateTmp=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictNamespaces=true
+RestrictRealtime=true
+MemoryDenyWriteExecute=true
+SystemCallFilter=@system-service
+SystemCallFilter=~@mount @reboot @swap
+LimitNOFILE=65536
