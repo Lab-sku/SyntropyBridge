@@ -13,7 +13,7 @@
   </p>
 
   <p>
-    <a href="https://github.com/YOUR_USERNAME/YOUR_REPO_NAME">English</a> •
+    <a href="README.md">English</a> •
     <a href="README_CN.md">中文</a> •
     <a href="#-table-of-contents">Docs</a> •
     <a href="#-quick-start">Quick Start</a> •
@@ -406,7 +406,7 @@ A: Yes. Configure `.env` with at least one provider key and run `python -m uvico
 A: No. SQLite single-writer semantics require one Uvicorn worker. Scale vertically or switch to PostgreSQL if you need horizontal scaling.
 
 **Q: How do I add a new provider?**  
-A: If it is OpenAI-compatible, add it via Admin → Custom Providers. For non-standard APIs, implement a provider class in `backend/providers/` and register it in `backend/providers/base.py`.
+A: If it is OpenAI-compatible, add it via Admin → Custom Providers. For non-standard APIs, implement a provider class in `backend/providers/` and register it with `ProviderRegistry` in `backend/providers/base.py` (or import it in `backend/providers/__init__.py`).
 
 **Q: What happens if a provider fails?**  
 A: The failed channel enters cooldown; traffic is rerouted to healthy channels. If all channels fail, a 502/503 is returned with a structured error.
@@ -448,7 +448,7 @@ Contributions are welcome! Please:
 5. Commit with clear messages
 6. Open a Pull Request
 
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines (coming soon).
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 
 ---
 

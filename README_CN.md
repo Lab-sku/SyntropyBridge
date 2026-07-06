@@ -405,7 +405,7 @@ A：可以。配置 `.env` 并至少填写一个供应商密钥，然后运行 `
 A：不支持。SQLite 单写语义要求单 Uvicorn worker。如需水平扩展，请改用 PostgreSQL。
 
 **Q：如何添加新的供应商？**  
-A：如果是 OpenAI 兼容，可通过 管理后台 → 自定义 Provider 添加；非标准 API 需在 `backend/providers/` 实现 provider 类并在 `backend/providers/base.py` 注册。
+A：如果是 OpenAI 兼容，可通过 管理后台 → 自定义 Provider 添加；非标准 API 需在 `backend/providers/` 实现 provider 类，并通过 `ProviderRegistry` 在 `backend/providers/base.py` 注册（或在 `backend/providers/__init__.py` 中导入）。
 
 **Q：供应商故障时会怎样？**  
 A：失败渠道进入冷却期，流量自动路由到健康渠道。若全部渠道故障，返回 502/503 结构化错误。
