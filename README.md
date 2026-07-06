@@ -139,23 +139,25 @@ Whether you are running a small team AI hub or a public API platform, SyntropyBr
 | Deployment | Docker, Docker Compose, systemd, Nginx |
 | Testing | pytest, temp SQLite DB |
 
+<a name="quick-start"></a>
 ## ⚡ Quick Start
 
 ### Option 1: Docker Compose (Recommended)
 
 ```bash
 # 1. Clone
-git clone https://github.com/shinne3335/SyntropyBridge.git
-cd SyntropyBridge
+git clone https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
+cd YOUR_REPO_NAME
 
-# 2. Configure environment
-cp .env.example .env
-# Edit .env and fill SECRET_KEY, ENCRYPTION_KEY, ADMIN_PASSWORD, provider keys
+# 2. Configure production environment
+cp deploy/.env.production.example .env.production
+# Edit .env.production and fill SECRET_KEY, ENCRYPTION_KEY, ADMIN_PASSWORD, provider keys
 
-# 3. Start everything
-docker-compose up -d
+# 3. Build and start everything
+docker-compose up -d --build
 
 # 4. Visit http://localhost:8000 and create the admin account
+#    (or set ADMIN_PASSWORD in .env.production for auto-creation)
 ```
 
 ### Option 2: Local Development
@@ -200,6 +202,7 @@ DEEPSEEK_API_KEY=...
 
 > **Never commit `.env` or `*.db` files.** They are already ignored by `.gitignore`.
 
+<a name="api-documentation"></a>
 ## 📖 API Documentation
 
 Once running, interactive docs are available at:
@@ -228,6 +231,7 @@ curl -X POST http://localhost:8000/api/admin/login \
   -d '{"username":"admin","password":"your-password"}'
 ```
 
+<a name="deployment"></a>
 ## 🚀 Deployment
 
 See [`deploy/DEPLOYMENT.md`](deploy/DEPLOYMENT.md) for the full production runbook, including:
@@ -430,17 +434,18 @@ This project is licensed under the MIT License — see the [LICENSE](LICENSE) fi
 
 ```bash
 # 1. 克隆仓库
-git clone https://github.com/shinne3335/SyntropyBridge.git
-cd SyntropyBridge
+git clone https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
+cd YOUR_REPO_NAME
 
-# 2. 配置环境变量
-cp .env.example .env
-# 编辑 .env，填写 SECRET_KEY、ENCRYPTION_KEY、ADMIN_PASSWORD、供应商密钥
+# 2. 配置生产环境变量
+cp deploy/.env.production.example .env.production
+# 编辑 .env.production，填写 SECRET_KEY、ENCRYPTION_KEY、ADMIN_PASSWORD、供应商密钥
 
-# 3. 一键启动
-docker-compose up -d
+# 3. 构建并一键启动
+docker-compose up -d --build
 
 # 4. 访问 http://localhost:8000，创建管理员账号
+#    （或在 .env.production 中设置 ADMIN_PASSWORD 自动创建）
 ```
 
 ### 方式二：本地开发
