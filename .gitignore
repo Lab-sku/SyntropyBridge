@@ -22,9 +22,23 @@ build/
 # Environment
 .env
 .env.local
+.env.production
+.env.*.local
+
+# Runtime secrets
+.dev-secret
+*.pem
+*.key
+*.p12
+*.crt
+secrets/
+credentials/
 
 # Database
 *.db
+*.db-journal
+*.db-wal
+*.db-shm
 *.sqlite
 *.sqlite3
 
@@ -53,6 +67,9 @@ htmlcov/
 /check_*.py
 /list_*.py
 /test_*.py
+
+# Docker
+docker-compose.override.yml
 
 # Misc
 *.bak
