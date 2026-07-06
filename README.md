@@ -75,23 +75,6 @@ Whether you are running a small team AI hub or a public API platform, SyntropyBr
 | Webhook delivery is unreliable | Daily reconciliation jobs for Stripe & USDT |
 | No admin visibility | Web dashboard for users, orders, providers, pricing, and audit logs |
 
-### Feature Comparison
-
-| Capability | SyntropyBridge | OneAPI | New API | Custom Reverse Proxy |
-|------------|:------------:|:------:|:-------:|:--------------------:|
-| OpenAI-compatible gateway | ✅ | ✅ | ✅ | ⚠️ partial |
-| 13+ built-in providers | ✅ | ✅ | ✅ | ❌ |
-| Per-user quota (6 dims) | ✅ | ⚠️ | ⚠️ | ❌ |
-| Credit wallet & billing | ✅ | ⚠️ | ⚠️ | ❌ |
-| Stripe + USDT payments | ✅ | ⚠️ | ❌ | ❌ |
-| Subscription lifecycle | ✅ | ⚠️ | ❌ | ❌ |
-| Web admin dashboard | ✅ | ✅ | ⚠️ | ❌ |
-| Audit logs | ✅ | ⚠️ | ❌ | ❌ |
-| Circuit breaker & channel rotation | ✅ | ✅ | ⚠️ | ❌ |
-| Self-hosted / single binary | ✅ | ✅ | ✅ | ⚠️ |
-
-> ⚠️ indicates partial support or requires extra configuration.
-
 ---
 
 ## 🎨 Features
@@ -172,12 +155,9 @@ graph LR
 
 ## 📸 Screenshots
 
-> 📷 **We need your help!** If you deploy SyntropyBridge, please consider contributing screenshots. Place them in `docs/screenshots/` and open a PR.
-
-| Admin Dashboard | User Wallet | Provider Health |
-|:---------------:|:-----------:|:---------------:|
-| ![dashboard](docs/screenshots/dashboard.png) | ![wallet](docs/screenshots/wallet.png) | ![health](docs/screenshots/health.png) |
-| *Manage users, orders, subscriptions and providers* | *Top-up, transactions, auto-recharge* | *Latency, success rate, channel status* |
+| Login | Admin Dashboard | Providers | Chat |
+|:-----:|:---------------:|:---------:|:----:|
+| ![login](docs/picture/login.png) | ![dashboard](docs/picture/dashboard.png) | ![providers](docs/picture/providers.png) | ![chat](docs/picture/chat.png) |
 
 ---
 
@@ -393,7 +373,7 @@ SyntropyBridge has been through multiple security audits (Phase 1/2/3). Highligh
 - API keys and provider keys encrypted at rest with Fernet
 - Log redaction for secrets, emails, and PII
 
-For responsible disclosure, please email security@your-domain.com or open a private GitHub Security Advisory.
+For responsible disclosure, please email sliocben@gmail.com or open a private GitHub Security Advisory.
 
 ---
 
@@ -493,7 +473,7 @@ Thanks to everyone who has contributed to SyntropyBridge!
 
 ## 💬 Support
 
-- 📧 Email: contact@your-domain.com
+- 📧 Email: sliocben@gmail.com
 - 💬 Discussions: [GitHub Discussions](https://github.com/Lab-sku/SyntropyBridge/discussions)
 - 🐛 Issues: [GitHub Issues](https://github.com/Lab-sku/SyntropyBridge/issues)
 
