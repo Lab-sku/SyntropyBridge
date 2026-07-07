@@ -31,8 +31,8 @@ ARG GIT_COMMIT
 ARG BUILD_DATE
 
 # OCI image labels (must be on the final stage to appear on the published image)
-LABEL org.opencontainers.image.title="api-zhuanzhuan" \
-      org.opencontainers.image.source="https://github.com/your-org/api-zhuanzhuan" \
+LABEL org.opencontainers.image.title="SyntropyBridge" \
+      org.opencontainers.image.source="https://github.com/Lab-sku/SyntropyBridge" \
       org.opencontainers.image.revision="${GIT_COMMIT}" \
       org.opencontainers.image.created="${BUILD_DATE}"
 

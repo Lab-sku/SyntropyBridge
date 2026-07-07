@@ -1,13 +1,13 @@
 services:
   api:
-    image: api-zhuanzhuan:${TAG:-latest}
+    image: syntropybridge:${TAG:-latest}
     build:
       context: .
       dockerfile: Dockerfile
       args:
         GIT_COMMIT: ${GIT_COMMIT:-unknown}
         BUILD_DATE: ${BUILD_DATE:-unknown}
-    container_name: api-zhuanzhuan
+    container_name: syntropybridge
     restart: unless-stopped
     ports:
       - "127.0.0.1:8000:8000"
@@ -36,14 +36,14 @@ services:
         max-file: "3"
 
   worker:
-    image: api-zhuanzhuan:${TAG:-latest}
+    image: syntropybridge:${TAG:-latest}
     build:
       context: .
       dockerfile: Dockerfile
       args:
         GIT_COMMIT: ${GIT_COMMIT:-unknown}
         BUILD_DATE: ${BUILD_DATE:-unknown}
-    container_name: api-zhuanzhuan-worker
+    container_name: syntropybridge-worker
     restart: unless-stopped
     env_file:
       - .env.production
@@ -55,16 +55,19 @@ services:
     entrypoint: ["/bin/sh", "-c"]
     command:
       - |
-        echo "Starting subscription worker cron (hourly)..."
-        LOCKFILE=/tmp/api-worker.lock
+        echo "Starting background worker..."
+        DAILY_MARKER=/tmp/syntropybridge-daily.marker
         while true; do
-          if flock -n "$$LOCKFILE"; then
-            echo "[$$(date)] Running daily subscription jobs..."
-            python -c "from backend.services.subscription_service import SubscriptionService; print(SubscriptionService.run_daily_jobs())" || echo "[$$(date)] Worker job failed"
-            flock -u "$$LOCKFILE"
-          else
-            echo "[$$(date)] Previous job still running, skipping"
+          echo "[$$(date)] Running hourly jobs..."
+          python -c "from backend.services.subscription_service import SubscriptionService; print(SubscriptionService.run_hourly_jobs())" || echo "[$$(date)] Hourly job failed"
+
+          TODAY=$$(date +%Y%m%d)
+          if [ ! -f "$$DAILY_MARKER" ] || [ "$$(cat $$DAILY_MARKER)" != "$$TODAY" ]; then
+            echo "[$$(date)] Running daily jobs..."
+            python -c "from backend.services.subscription_service import SubscriptionService; print(SubscriptionService.run_daily_jobs())" || echo "[$$(date)] Daily job failed"
+            echo "$$TODAY" > "$$DAILY_MARKER"
           fi
+
           sleep 3600
         done
     deploy:
