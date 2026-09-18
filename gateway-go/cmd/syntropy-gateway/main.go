@@ -12,6 +12,7 @@ import (
 	"github.com/Lab-sku/SyntropyBridge/gateway-go/internal/config"
 	"github.com/Lab-sku/SyntropyBridge/gateway-go/internal/gateway"
 	"github.com/Lab-sku/SyntropyBridge/gateway-go/internal/provider"
+	"github.com/Lab-sku/SyntropyBridge/gateway-go/internal/provider/openaicompat"
 )
 
 func main() {
@@ -24,6 +25,10 @@ func main() {
 	}
 
 	registry := provider.NewRegistry()
+	if err := registry.Register(openaicompat.New()); err != nil {
+		logger.Error("register provider adapter", "error", err)
+		os.Exit(2)
+	}
 	gatewayServer := gateway.NewServer(logger, registry)
 	httpServer := &http.Server{
 		Addr:              cfg.Addr,
