@@ -10,10 +10,14 @@ The first milestone contains:
 - a compilable HTTP service with health/readiness endpoints;
 - loss-aware canonical request, response and streaming-event types;
 - provider adapter and registry contracts;
+- an OpenAI-compatible adapter with loss-aware request forwarding, response decoding,
+  SSE text/reasoning/tool-call events, usage parsing and error normalization;
 - an explainable weighted router primitive;
 - unit tests and CI checks.
 
-It does **not** yet claim provider inference compatibility.
+The adapter contract is implemented and tested, but the public inference handler and
+deployment resolver are not yet wired. The service therefore does **not** claim end-to-end
+provider inference readiness.
 
 ## Run
 

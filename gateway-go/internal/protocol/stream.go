@@ -22,6 +22,7 @@ const (
 type ToolCallDelta struct {
 	Index             int    `json:"index"`
 	ID                string `json:"id,omitempty"`
+	Type              string `json:"type,omitempty"`
 	Name              string `json:"name,omitempty"`
 	ArgumentsFragment string `json:"arguments_fragment,omitempty"`
 }
@@ -30,6 +31,9 @@ type ToolCallDelta struct {
 type StreamEvent struct {
 	Type           StreamEventType            `json:"type"`
 	Sequence       uint64                     `json:"sequence"`
+	ResponseID     string                     `json:"response_id,omitempty"`
+	Model          string                     `json:"model,omitempty"`
+	FinishReason   *string                    `json:"finish_reason,omitempty"`
 	TextDelta      *string                    `json:"text_delta,omitempty"`
 	ReasoningDelta *string                    `json:"reasoning_delta,omitempty"`
 	ToolCallDelta  *ToolCallDelta             `json:"tool_call_delta,omitempty"`

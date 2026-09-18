@@ -8,7 +8,7 @@ Legend: `planned`, `in-progress`, `supported`, `blocked`.
 
 | Client protocol | Basic request | Streaming | Tools | Multimodal | Reasoning | Structured output | Status |
 |---|---:|---:|---:|---:|---:|---:|---|
-| OpenAI Chat Completions | — | — | — | — | — | — | planned |
+| OpenAI Chat Completions | in-progress | in-progress | in-progress | in-progress | in-progress | in-progress | in-progress |
 | OpenAI Responses | — | — | — | — | — | — | planned |
 | Anthropic Messages | — | — | — | — | — | — | planned |
 | Gemini GenerateContent | — | — | — | — | — | — | planned |

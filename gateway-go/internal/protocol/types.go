@@ -65,6 +65,7 @@ type InlineData struct {
 
 type ToolCall struct {
 	ID        string          `json:"id"`
+	Type      string          `json:"type,omitempty"`
 	Name      string          `json:"name"`
 	Arguments json.RawMessage `json:"arguments"`
 }
@@ -81,12 +82,14 @@ type ReasoningBlock struct {
 }
 
 type Message struct {
-	Role       Role                       `json:"role"`
-	Name       *string                    `json:"name,omitempty"`
-	Content    []ContentPart              `json:"content,omitempty"`
-	ToolCallID *string                    `json:"tool_call_id,omitempty"`
-	Extensions map[string]json.RawMessage `json:"extensions,omitempty"`
-	Raw        json.RawMessage            `json:"raw,omitempty"`
+	Role        Role                       `json:"role"`
+	Name        *string                    `json:"name,omitempty"`
+	Content     []ContentPart              `json:"content,omitempty"`
+	ToolCallID  *string                    `json:"tool_call_id,omitempty"`
+	Refusal     *string                    `json:"refusal,omitempty"`
+	Annotations []json.RawMessage          `json:"annotations,omitempty"`
+	Extensions  map[string]json.RawMessage `json:"extensions,omitempty"`
+	Raw         json.RawMessage            `json:"raw,omitempty"`
 }
 
 type ToolDefinition struct {
@@ -103,12 +106,12 @@ type ReasoningConfig struct {
 }
 
 type GenerationParameters struct {
-	MaxOutputTokens *int      `json:"max_output_tokens,omitempty"`
-	Temperature     *float64  `json:"temperature,omitempty"`
-	TopP            *float64  `json:"top_p,omitempty"`
-	TopK            *int      `json:"top_k,omitempty"`
-	Stop             []string `json:"stop,omitempty"`
-	Seed             *int64   `json:"seed,omitempty"`
+	MaxOutputTokens *int     `json:"max_output_tokens,omitempty"`
+	Temperature     *float64 `json:"temperature,omitempty"`
+	TopP            *float64 `json:"top_p,omitempty"`
+	TopK            *int     `json:"top_k,omitempty"`
+	Stop            []string `json:"stop,omitempty"`
+	Seed            *int64   `json:"seed,omitempty"`
 }
 
 // CanonicalRequest is the internal protocol boundary. It is not exposed as a public
@@ -141,8 +144,10 @@ type Usage struct {
 
 type CanonicalResponse struct {
 	RequestID    string                     `json:"request_id"`
+	ResponseID   string                     `json:"response_id,omitempty"`
 	ProviderID   string                     `json:"provider_id,omitempty"`
 	Model        string                     `json:"model"`
+	CreatedAt    int64                      `json:"created_at,omitempty"`
 	Messages     []Message                  `json:"messages,omitempty"`
 	Usage        *Usage                     `json:"usage,omitempty"`
 	FinishReason string                     `json:"finish_reason,omitempty"`
