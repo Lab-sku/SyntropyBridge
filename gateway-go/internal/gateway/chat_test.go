@@ -123,8 +123,8 @@ func newConfiguredTestGateway(t *testing.T, upstream *httptest.Server, extraMeta
 	resolver, err := router.NewStaticResolver(router.Plan{
 		ModelAlias: "public-alias",
 		Targets: []router.Target{{
-			Candidate: router.Candidate{DeploymentID: "dep-test", CredentialID: "cred-test", Weight: 1, Enabled: true, Healthy: true},
-			Adapter:   openaicompat.Name,
+			Candidate:  router.Candidate{DeploymentID: "dep-test", CredentialID: "cred-test", Weight: 1, Enabled: true, Healthy: true},
+			Adapter:    openaicompat.Name,
 			Deployment: provider.Deployment{ID: "dep-test", ProviderID: "provider-test", BaseURL: upstream.URL, Metadata: metadata},
 			Credential: provider.Credential{ID: "cred-test", Secret: "upstream-secret"},
 		}},
