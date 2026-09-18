@@ -9,6 +9,7 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/Lab-sku/SyntropyBridge/gateway-go/internal/bootstrap"
 	"github.com/Lab-sku/SyntropyBridge/gateway-go/internal/config"
 	"github.com/Lab-sku/SyntropyBridge/gateway-go/internal/gateway"
 	"github.com/Lab-sku/SyntropyBridge/gateway-go/internal/provider"
@@ -29,7 +30,25 @@ func main() {
 		logger.Error("register provider adapter", "error", err)
 		os.Exit(2)
 	}
-	gatewayServer := gateway.NewServer(logger, registry)
+
+	serverOptions := make([]gateway.Option, 0, 2)
+	bootstrapRuntime, err := bootstrap.Build(cfg, registry)
+	if err != nil {
+		logger.Error("build bootstrap runtime", "error", err)
+		os.Exit(2)
+	}
+	if bootstrapRuntime != nil {
+		serverOptions = append(serverOptions,
+			gateway.WithInferenceService(bootstrapRuntime.Executor),
+			gateway.WithBearerToken(bootstrapRuntime.ClientToken),
+		)
+		defer bootstrapRuntime.HTTPClient.CloseIdleConnections()
+		logger.Info("bootstrap inference enabled", "model_alias", cfg.Bootstrap.ModelAlias)
+	} else {
+		logger.Warn("inference is disabled; configure the control plane or explicitly enable bootstrap mode")
+	}
+
+	gatewayServer := gateway.NewServer(logger, registry, serverOptions...)
 	httpServer := &http.Server{
 		Addr:              cfg.Addr,
 		Handler:           gatewayServer.Handler(),
