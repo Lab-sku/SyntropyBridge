@@ -7,6 +7,7 @@ type StreamEventType string
 
 const (
 	StreamEventResponseStart  StreamEventType = "response.start"
+	StreamEventWireChunk      StreamEventType = "wire.chunk"
 	StreamEventMessageStart   StreamEventType = "message.start"
 	StreamEventTextDelta      StreamEventType = "text.delta"
 	StreamEventReasoningDelta StreamEventType = "reasoning.delta"
@@ -31,6 +32,7 @@ type ToolCallDelta struct {
 type StreamEvent struct {
 	Type           StreamEventType            `json:"type"`
 	Sequence       uint64                     `json:"sequence"`
+	SourceSequence uint64                     `json:"source_sequence,omitempty"`
 	ResponseID     string                     `json:"response_id,omitempty"`
 	Model          string                     `json:"model,omitempty"`
 	FinishReason   *string                    `json:"finish_reason,omitempty"`

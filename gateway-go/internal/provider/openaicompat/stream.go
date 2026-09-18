@@ -37,12 +37,16 @@ func (*Adapter) DecodeStream(
 
 	reader := bufio.NewReaderSize(resp.Body, 64<<10)
 	sequence := uint64(0)
+	sourceSequence := uint64(0)
 	started := false
 	toolStarted := make(map[int]bool)
 
 	emitEvent := func(event protocol.StreamEvent) error {
 		sequence++
 		event.Sequence = sequence
+		if event.SourceSequence == 0 {
+			event.SourceSequence = sourceSequence
+		}
 		return emit(event)
 	}
 
@@ -54,7 +58,11 @@ func (*Adapter) DecodeStream(
 		if err != nil {
 			if errors.Is(err, io.EOF) {
 				if started {
-					return emitEvent(protocol.StreamEvent{Type: protocol.StreamEventResponseEnd})
+					sourceSequence++
+					return emitEvent(protocol.StreamEvent{
+						Type:           protocol.StreamEventResponseEnd,
+						SourceSequence: sourceSequence,
+					})
 				}
 				return nil
 			}
@@ -63,8 +71,12 @@ func (*Adapter) DecodeStream(
 		if len(data) == 0 {
 			continue
 		}
+		sourceSequence++
 		if bytes.Equal(bytes.TrimSpace(data), []byte("[DONE]")) {
-			return emitEvent(protocol.StreamEvent{Type: protocol.StreamEventResponseEnd})
+			return emitEvent(protocol.StreamEvent{
+				Type:           protocol.StreamEventResponseEnd,
+				SourceSequence: sourceSequence,
+			})
 		}
 
 		var chunk chatChunk
@@ -86,10 +98,17 @@ func (*Adapter) DecodeStream(
 				Type:       protocol.StreamEventResponseStart,
 				ResponseID: chunk.ID,
 				Model:      chunk.Model,
-				Raw:        append(json.RawMessage(nil), data...),
 			}); err != nil {
 				return err
 			}
+		}
+		if err := emitEvent(protocol.StreamEvent{
+			Type:       protocol.StreamEventWireChunk,
+			ResponseID: chunk.ID,
+			Model:      chunk.Model,
+			Raw:        append(json.RawMessage(nil), data...),
+		}); err != nil {
+			return err
 		}
 
 		for _, choice := range chunk.Choices {
@@ -98,7 +117,6 @@ func (*Adapter) DecodeStream(
 					Type:       protocol.StreamEventMessageStart,
 					ResponseID: chunk.ID,
 					Model:      chunk.Model,
-					Raw:        append(json.RawMessage(nil), data...),
 				}); err != nil {
 					return err
 				}
@@ -110,7 +128,6 @@ func (*Adapter) DecodeStream(
 					ResponseID: chunk.ID,
 					Model:      chunk.Model,
 					TextDelta:  &text,
-					Raw:        append(json.RawMessage(nil), data...),
 				}); err != nil {
 					return err
 				}
@@ -121,7 +138,6 @@ func (*Adapter) DecodeStream(
 					ResponseID:     chunk.ID,
 					Model:          chunk.Model,
 					ReasoningDelta: reasoning,
-					Raw:            append(json.RawMessage(nil), data...),
 				}); err != nil {
 					return err
 				}
@@ -144,7 +160,6 @@ func (*Adapter) DecodeStream(
 					ResponseID:    chunk.ID,
 					Model:         chunk.Model,
 					ToolCallDelta: delta,
-					Raw:           append(json.RawMessage(nil), data...),
 				}); err != nil {
 					return err
 				}
@@ -156,7 +171,6 @@ func (*Adapter) DecodeStream(
 					ResponseID:   chunk.ID,
 					Model:        chunk.Model,
 					FinishReason: &finish,
-					Raw:          append(json.RawMessage(nil), data...),
 				}); err != nil {
 					return err
 				}
@@ -168,7 +182,6 @@ func (*Adapter) DecodeStream(
 				ResponseID: chunk.ID,
 				Model:      chunk.Model,
 				Usage:      chunk.Usage.canonical(),
-				Raw:        append(json.RawMessage(nil), data...),
 			}); err != nil {
 				return err
 			}
