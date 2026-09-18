@@ -11,14 +11,14 @@ import (
 var ErrNoEligibleCandidate = errors.New("no eligible routing candidate")
 
 type Candidate struct {
-	DeploymentID       string
-	CredentialID       string
-	Weight             int
-	Priority           int
-	Healthy            bool
-	Enabled            bool
+	DeploymentID        string
+	CredentialID        string
+	Weight              int
+	Priority            int
+	Healthy             bool
+	Enabled             bool
 	EstimatedCostMicros int64
-	ObservedLatency    time.Duration
+	ObservedLatency     time.Duration
 }
 
 type Assessment struct {
