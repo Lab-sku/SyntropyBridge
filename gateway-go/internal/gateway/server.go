@@ -1,29 +1,90 @@
 package gateway
 
 import (
+	"context"
+	"crypto/rand"
+	"crypto/subtle"
+	"encoding/hex"
 	"encoding/json"
+	"errors"
+	"io"
 	"log/slog"
 	"net/http"
+	"strings"
 	"time"
 
+	"github.com/Lab-sku/SyntropyBridge/gateway-go/internal/execution"
 	"github.com/Lab-sku/SyntropyBridge/gateway-go/internal/protocol"
+	openaiwire "github.com/Lab-sku/SyntropyBridge/gateway-go/internal/protocol/openai"
 	"github.com/Lab-sku/SyntropyBridge/gateway-go/internal/provider"
+	"github.com/Lab-sku/SyntropyBridge/gateway-go/internal/router"
 )
 
-type Server struct {
-	logger   *slog.Logger
-	registry *provider.Registry
-	started  time.Time
+const defaultMaxRequestBytes int64 = 16 << 20
+
+type InferenceService interface {
+	Complete(ctx context.Context, req *protocol.CanonicalRequest) (*execution.Result, error)
+	Stream(ctx context.Context, req *protocol.CanonicalRequest, emit func(protocol.StreamEvent) error) (*execution.StreamResult, error)
 }
 
-func NewServer(logger *slog.Logger, registry *provider.Registry) *Server {
+type Authenticator interface {
+	Authenticate(request *http.Request) error
+}
+
+type Option func(*Server)
+
+func WithInferenceService(service InferenceService) Option {
+	return func(server *Server) { server.inference = service }
+}
+
+func WithAuthenticator(authenticator Authenticator) Option {
+	return func(server *Server) { server.authenticator = authenticator }
+}
+
+func WithBearerToken(token string) Option {
+	return func(server *Server) {
+		if token != "" {
+			server.authenticator = bearerAuthenticator{token: []byte(token)}
+		}
+	}
+}
+
+func WithMaxRequestBytes(limit int64) Option {
+	return func(server *Server) {
+		if limit > 0 {
+			server.maxRequestBytes = limit
+		}
+	}
+}
+
+type Server struct {
+	logger          *slog.Logger
+	registry        *provider.Registry
+	inference       InferenceService
+	authenticator   Authenticator
+	maxRequestBytes int64
+	started         time.Time
+}
+
+func NewServer(logger *slog.Logger, registry *provider.Registry, options ...Option) *Server {
 	if logger == nil {
 		logger = slog.Default()
 	}
 	if registry == nil {
 		registry = provider.NewRegistry()
 	}
-	return &Server{logger: logger, registry: registry, started: time.Now().UTC()}
+	server := &Server{
+		logger:          logger,
+		registry:        registry,
+		maxRequestBytes: defaultMaxRequestBytes,
+		started:         time.Now().UTC(),
+	}
+	for _, option := range options {
+		if option != nil {
+			option(server)
+		}
+	}
+	return server
 }
 
 func (s *Server) Handler() http.Handler {
@@ -31,7 +92,12 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /healthz", s.handleHealth)
 	mux.HandleFunc("GET /readyz", s.handleReady)
 	mux.HandleFunc("GET /v1/gateway/capabilities", s.handleCapabilities)
+	mux.HandleFunc("POST /v1/chat/completions", s.handleChatCompletions)
 	return requestLogMiddleware(s.logger, mux)
+}
+
+func (s *Server) inferenceReady() bool {
+	return s.inference != nil && s.authenticator != nil
 }
 
 func (s *Server) handleHealth(w http.ResponseWriter, _ *http.Request) {
@@ -42,12 +108,25 @@ func (s *Server) handleHealth(w http.ResponseWriter, _ *http.Request) {
 }
 
 func (s *Server) handleReady(w http.ResponseWriter, _ *http.Request) {
+	if !s.inferenceReady() {
+		writeJSON(w, http.StatusServiceUnavailable, map[string]any{
+			"status":          "not_ready",
+			"inference_ready": false,
+		})
+		return
+	}
 	writeJSON(w, http.StatusOK, map[string]any{
-		"status": "ready",
+		"status":          "ready",
+		"inference_ready": true,
 	})
 }
 
 func (s *Server) handleCapabilities(w http.ResponseWriter, _ *http.Request) {
+	ready := s.inferenceReady()
+	note := "protocol and adapter contracts are available; inference requires an injected route resolver and authenticator"
+	if ready {
+		note = "inference service and authentication are configured"
+	}
 	writeJSON(w, http.StatusOK, map[string]any{
 		"protocols": []protocol.Protocol{
 			protocol.ProtocolOpenAIChat,
@@ -56,28 +135,263 @@ func (s *Server) handleCapabilities(w http.ResponseWriter, _ *http.Request) {
 			protocol.ProtocolGemini,
 		},
 		"registered_adapters": s.registry.Names(),
-		"inference_ready":     false,
-		"note":                "protocol types are scaffolded; provider inference is not yet enabled",
+		"inference_ready":     ready,
+		"note":                note,
 	})
+}
+
+func (s *Server) handleChatCompletions(w http.ResponseWriter, request *http.Request) {
+	requestID := requestIDFromHeader(request.Header.Get("X-Request-ID"))
+	w.Header().Set("X-Request-ID", requestID)
+
+	if !s.inferenceReady() {
+		writeOpenAIError(w, http.StatusServiceUnavailable, "gateway_not_ready", "gateway inference is not configured", "server_error")
+		return
+	}
+	if err := s.authenticator.Authenticate(request); err != nil {
+		writeOpenAIError(w, http.StatusUnauthorized, "invalid_api_key", "invalid authentication credentials", "authentication_error")
+		return
+	}
+
+	request.Body = http.MaxBytesReader(w, request.Body, s.maxRequestBytes)
+	body, err := io.ReadAll(request.Body)
+	if err != nil {
+		var maxBytesError *http.MaxBytesError
+		if errors.As(err, &maxBytesError) {
+			writeOpenAIError(w, http.StatusRequestEntityTooLarge, "request_too_large", "request body exceeds the configured limit", "invalid_request_error")
+		} else {
+			writeOpenAIError(w, http.StatusBadRequest, "request_read_error", "gateway could not read the request body", "invalid_request_error")
+		}
+		return
+	}
+	canonical, err := openaiwire.DecodeChatRequest(body, requestID)
+	if err != nil {
+		writeOpenAIError(w, http.StatusBadRequest, "invalid_request", "invalid Chat Completions request", "invalid_request_error")
+		return
+	}
+
+	if canonical.Stream {
+		s.handleChatStream(w, request, canonical)
+		return
+	}
+	result, err := s.inference.Complete(request.Context(), canonical)
+	if err != nil {
+		s.writeExecutionError(w, err)
+		return
+	}
+	if result == nil || result.Response == nil {
+		writeOpenAIError(w, http.StatusBadGateway, "empty_upstream_response", "the upstream provider returned no response", "server_error")
+		return
+	}
+
+	responseBody := result.Response.RawBody
+	if len(responseBody) == 0 || !json.Valid(responseBody) {
+		responseBody, err = openaiwire.EncodeChatResponse(result.Response)
+		if err != nil {
+			s.logger.ErrorContext(request.Context(), "encode chat response", "request_id", requestID, "error", err)
+			writeOpenAIError(w, http.StatusInternalServerError, "response_encoding_error", "gateway could not encode the upstream response", "server_error")
+			return
+		}
+	}
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.WriteHeader(http.StatusOK)
+	_, _ = w.Write(responseBody)
+}
+
+func (s *Server) handleChatStream(w http.ResponseWriter, request *http.Request, canonical *protocol.CanonicalRequest) {
+	flusher, ok := w.(http.Flusher)
+	if !ok {
+		writeOpenAIError(w, http.StatusInternalServerError, "streaming_unsupported", "HTTP streaming is unavailable", "server_error")
+		return
+	}
+
+	encoder := openaiwire.NewChatStreamEncoder()
+	started := false
+	writeFrame := func(frame []byte) error {
+		if !started {
+			w.Header().Set("Content-Type", "text/event-stream; charset=utf-8")
+			w.Header().Set("Cache-Control", "no-cache")
+			w.Header().Set("X-Accel-Buffering", "no")
+			w.WriteHeader(http.StatusOK)
+			started = true
+		}
+		if _, err := w.Write(frame); err != nil {
+			return err
+		}
+		flusher.Flush()
+		return nil
+	}
+
+	_, err := s.inference.Stream(request.Context(), canonical, func(event protocol.StreamEvent) error {
+		frames, encodeErr := encoder.Encode(event)
+		if encodeErr != nil {
+			return encodeErr
+		}
+		for _, frame := range frames {
+			if err := writeFrame(frame); err != nil {
+				return err
+			}
+		}
+		return nil
+	})
+	if err == nil {
+		if !started {
+			writeOpenAIError(w, http.StatusBadGateway, "empty_upstream_stream", "the upstream provider returned no stream events", "server_error")
+		}
+		return
+	}
+	if request.Context().Err() != nil || errors.Is(err, request.Context().Err()) {
+		return
+	}
+	if !started {
+		s.writeExecutionError(w, err)
+		return
+	}
+
+	status, code, message, errorType := classifyExecutionError(err)
+	_ = status // HTTP status is already committed for an SSE response.
+	errorBody := openaiwire.EncodeChatError(code, message, errorType, nil)
+	_ = writeFrame(append(append([]byte("data: "), errorBody...), []byte("\n\n")...))
+	_ = writeFrame([]byte("data: [DONE]\n\n"))
+}
+
+func (s *Server) writeExecutionError(w http.ResponseWriter, err error) {
+	status, code, message, errorType := classifyExecutionError(err)
+	writeOpenAIError(w, status, code, message, errorType)
+}
+
+func classifyExecutionError(err error) (status int, code, message, errorType string) {
+	switch {
+	case errors.Is(err, router.ErrRouteNotFound):
+		return http.StatusNotFound, "model_not_found", "the requested model alias is not configured", "invalid_request_error"
+	case errors.Is(err, router.ErrNoEligibleCandidate):
+		return http.StatusServiceUnavailable, "no_available_deployment", "no healthy deployment is currently available", "server_error"
+	case errors.Is(err, execution.ErrCapabilityUnsupported):
+		return http.StatusBadRequest, "unsupported_capability", "the selected deployment does not declare support for this request", "invalid_request_error"
+	case errors.Is(err, execution.ErrAdapterNotFound):
+		return http.StatusServiceUnavailable, "adapter_not_configured", "the selected provider adapter is unavailable", "server_error"
+	}
+
+	var gatewayError *protocol.GatewayError
+	if errors.As(err, &gatewayError) {
+		switch gatewayError.HTTPStatus {
+		case http.StatusTooManyRequests:
+			return http.StatusTooManyRequests, "upstream_rate_limit", "the upstream provider rate limited the request", "rate_limit_error"
+		case http.StatusBadRequest:
+			return http.StatusBadRequest, "upstream_rejected_request", "the upstream provider rejected the request", "invalid_request_error"
+		case http.StatusRequestTimeout, http.StatusGatewayTimeout:
+			return http.StatusGatewayTimeout, "upstream_timeout", "the upstream provider timed out", "server_error"
+		default:
+			return http.StatusBadGateway, "upstream_error", "the upstream provider request failed", "server_error"
+		}
+	}
+	var transportError *execution.TransportError
+	if errors.As(err, &transportError) {
+		return http.StatusBadGateway, "upstream_transport_error", "the gateway could not reach the upstream provider", "server_error"
+	}
+	return http.StatusInternalServerError, "gateway_error", "the gateway could not complete the request", "server_error"
+}
+
+func writeOpenAIError(w http.ResponseWriter, status int, code, message, errorType string) {
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.WriteHeader(status)
+	_, _ = w.Write(openaiwire.EncodeChatError(code, message, errorType, nil))
 }
 
 func writeJSON(w http.ResponseWriter, status int, value any) {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.WriteHeader(status)
-	if err := json.NewEncoder(w).Encode(value); err != nil {
-		// The headers are already committed. Logging is handled by the surrounding
-		// server in later milestones; health payloads are intentionally small.
+	_ = json.NewEncoder(w).Encode(value)
+}
+
+func requestIDFromHeader(value string) string {
+	value = strings.TrimSpace(value)
+	if value != "" && len(value) <= 128 && isSafeRequestID(value) {
+		return value
+	}
+	var randomBytes [12]byte
+	if _, err := rand.Read(randomBytes[:]); err == nil {
+		return "req_" + hex.EncodeToString(randomBytes[:])
+	}
+	return "req_" + hex.EncodeToString([]byte(time.Now().UTC().Format(time.RFC3339Nano)))
+}
+
+func isSafeRequestID(value string) bool {
+	for _, char := range value {
+		if (char >= 'a' && char <= 'z') || (char >= 'A' && char <= 'Z') ||
+			(char >= '0' && char <= '9') || char == '-' || char == '_' || char == '.' {
+			continue
+		}
+		return false
+	}
+	return true
+}
+
+type bearerAuthenticator struct{ token []byte }
+
+func (auth bearerAuthenticator) Authenticate(request *http.Request) error {
+	parts := strings.Fields(request.Header.Get("Authorization"))
+	if len(parts) != 2 || !strings.EqualFold(parts[0], "Bearer") {
+		return errors.New("missing bearer token")
+	}
+	provided := []byte(parts[1])
+	if len(provided) != len(auth.token) || subtle.ConstantTimeCompare(provided, auth.token) != 1 {
+		return errors.New("invalid bearer token")
+	}
+	return nil
+}
+
+type responseMetrics struct {
+	http.ResponseWriter
+	status int
+	bytes  int
+}
+
+func (writer *responseMetrics) WriteHeader(status int) {
+	if writer.status != 0 {
 		return
 	}
+	writer.status = status
+	writer.ResponseWriter.WriteHeader(status)
+}
+
+func (writer *responseMetrics) Write(body []byte) (int, error) {
+	if writer.status == 0 {
+		writer.status = http.StatusOK
+	}
+	written, err := writer.ResponseWriter.Write(body)
+	writer.bytes += written
+	return written, err
+}
+
+type flushingResponseMetrics struct {
+	*responseMetrics
+	flusher http.Flusher
+}
+
+func (writer *flushingResponseMetrics) Flush() {
+	writer.flusher.Flush()
 }
 
 func requestLogMiddleware(logger *slog.Logger, next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		started := time.Now()
-		next.ServeHTTP(w, r)
+		metrics := &responseMetrics{ResponseWriter: w}
+		var wrapped http.ResponseWriter = metrics
+		if flusher, ok := w.(http.Flusher); ok {
+			wrapped = &flushingResponseMetrics{responseMetrics: metrics, flusher: flusher}
+		}
+		next.ServeHTTP(wrapped, r)
+		status := metrics.status
+		if status == 0 {
+			status = http.StatusOK
+		}
 		logger.InfoContext(r.Context(), "gateway request",
+			"request_id", metrics.Header().Get("X-Request-ID"),
 			"method", r.Method,
 			"path", r.URL.Path,
+			"status", status,
+			"bytes", metrics.bytes,
 			"duration", time.Since(started),
 		)
 	})
