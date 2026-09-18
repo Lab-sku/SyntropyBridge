@@ -1,3 +1,6 @@
 /syntropy-gateway
 /*.exe
 /coverage.out
+/.env
+/.env.*
+!/.env.bootstrap.example
