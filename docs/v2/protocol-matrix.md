@@ -9,7 +9,7 @@ Legend: `planned`, `in-progress`, `supported`, `blocked`.
 | Client protocol | Basic request | Streaming | Tools | Multimodal | Reasoning | Structured output | Status |
 |---|---:|---:|---:|---:|---:|---:|---|
 | OpenAI Chat Completions | in-progress | in-progress | in-progress | in-progress | in-progress | in-progress | in-progress |
-| OpenAI Responses | — | — | — | — | — | — | planned |
+| OpenAI Responses | in-progress | in-progress | in-progress | in-progress | in-progress | in-progress | in-progress |
 | Anthropic Messages | in-progress | in-progress | in-progress | in-progress | in-progress | in-progress | in-progress |
 | Gemini GenerateContent | — | — | — | — | — | — | planned |
 | Embeddings | — | n/a | n/a | n/a | n/a | n/a | planned |
@@ -26,8 +26,12 @@ Legend: `planned`, `in-progress`, `supported`, `blocked`.
 - Anthropic Messages now has a native upstream adapter and automated conversion tests
   for content blocks, images, tools, thinking, structured output, usage, errors and
   named SSE events.
-- The public Anthropic-compatible `POST /v1/messages` client endpoint is still pending.
-  Therefore no Anthropic row is marked `supported` yet.
+- Anthropic native upstream conversion is implemented and contract-tested, but the public
+  Anthropic-compatible `POST /v1/messages` client endpoint is still pending.
+- OpenAI Responses now has a public compatibility route backed by the canonical request and
+  stream event model. Stateful Responses features (`previous_response_id`, conversations,
+  background mode, and built-in tools) intentionally fail closed until a native state backend
+  and native Responses provider adapter are implemented.
 
 ## Provider-family implementation order
 

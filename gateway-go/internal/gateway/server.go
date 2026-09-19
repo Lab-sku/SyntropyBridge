@@ -93,6 +93,7 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /readyz", s.handleReady)
 	mux.HandleFunc("GET /v1/gateway/capabilities", s.handleCapabilities)
 	mux.HandleFunc("POST /v1/chat/completions", s.handleChatCompletions)
+	mux.HandleFunc("POST /v1/responses", s.handleResponses)
 	return requestLogMiddleware(s.logger, mux)
 }
 
@@ -254,6 +255,120 @@ func (s *Server) handleChatStream(w http.ResponseWriter, request *http.Request, 
 	_ = writeFrame(append(append([]byte("data: "), errorBody...), []byte("\n\n")...))
 	_ = writeFrame([]byte("data: [DONE]\n\n"))
 }
+
+
+func (s *Server) handleResponses(w http.ResponseWriter, request *http.Request) {
+	requestID := requestIDFromHeader(request.Header.Get("X-Request-ID"))
+	w.Header().Set("X-Request-ID", requestID)
+
+	if !s.inferenceReady() {
+		writeOpenAIError(w, http.StatusServiceUnavailable, "gateway_not_ready", "gateway inference is not configured", "server_error")
+		return
+	}
+	if err := s.authenticator.Authenticate(request); err != nil {
+		writeOpenAIError(w, http.StatusUnauthorized, "invalid_api_key", "invalid authentication credentials", "authentication_error")
+		return
+	}
+
+	request.Body = http.MaxBytesReader(w, request.Body, s.maxRequestBytes)
+	body, err := io.ReadAll(request.Body)
+	if err != nil {
+		var maxBytesError *http.MaxBytesError
+		if errors.As(err, &maxBytesError) {
+			writeOpenAIError(w, http.StatusRequestEntityTooLarge, "request_too_large", "request body exceeds the configured limit", "invalid_request_error")
+		} else {
+			writeOpenAIError(w, http.StatusBadRequest, "request_read_error", "gateway could not read the request body", "invalid_request_error")
+		}
+		return
+	}
+
+	canonical, err := openaiwire.DecodeResponsesRequest(body, requestID)
+	if err != nil {
+		writeOpenAIError(w, http.StatusBadRequest, "invalid_request", err.Error(), "invalid_request_error")
+		return
+	}
+	if canonical.Stream {
+		s.handleResponsesStream(w, request, canonical)
+		return
+	}
+
+	result, err := s.inference.Complete(request.Context(), canonical)
+	if err != nil {
+		s.writeExecutionError(w, err)
+		return
+	}
+	if result == nil || result.Response == nil {
+		writeOpenAIError(w, http.StatusBadGateway, "empty_upstream_response", "the upstream provider returned no response", "server_error")
+		return
+	}
+
+	response := *result.Response
+	response.Model = canonical.Model
+	responseBody, err := openaiwire.EncodeResponsesResponse(&response)
+	if err != nil {
+		s.logger.ErrorContext(request.Context(), "encode responses response", "request_id", requestID, "error", err)
+		writeOpenAIError(w, http.StatusInternalServerError, "response_encoding_error", "gateway could not encode the upstream response", "server_error")
+		return
+	}
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.WriteHeader(http.StatusOK)
+	_, _ = w.Write(responseBody)
+}
+
+func (s *Server) handleResponsesStream(w http.ResponseWriter, request *http.Request, canonical *protocol.CanonicalRequest) {
+	flusher, ok := w.(http.Flusher)
+	if !ok {
+		writeOpenAIError(w, http.StatusInternalServerError, "streaming_unsupported", "HTTP streaming is unavailable", "server_error")
+		return
+	}
+
+	encoder := openaiwire.NewResponsesStreamEncoder(canonical.RequestID, canonical.Model)
+	started := false
+	writeFrame := func(frame []byte) error {
+		if !started {
+			w.Header().Set("Content-Type", "text/event-stream; charset=utf-8")
+			w.Header().Set("Cache-Control", "no-cache")
+			w.Header().Set("X-Accel-Buffering", "no")
+			w.WriteHeader(http.StatusOK)
+			started = true
+		}
+		if _, err := w.Write(frame); err != nil {
+			return err
+		}
+		flusher.Flush()
+		return nil
+	}
+
+	_, err := s.inference.Stream(request.Context(), canonical, func(event protocol.StreamEvent) error {
+		frames, encodeErr := encoder.Encode(event)
+		if encodeErr != nil {
+			return encodeErr
+		}
+		for _, frame := range frames {
+			if err := writeFrame(frame); err != nil {
+				return err
+			}
+		}
+		return nil
+	})
+	if err == nil {
+		if !started {
+			writeOpenAIError(w, http.StatusBadGateway, "empty_upstream_stream", "the upstream provider returned no stream events", "server_error")
+		}
+		return
+	}
+	if request.Context().Err() != nil || errors.Is(err, request.Context().Err()) {
+		return
+	}
+	if !started {
+		s.writeExecutionError(w, err)
+		return
+	}
+
+	_, code, message, errorType := classifyExecutionError(err)
+	_ = writeFrame(openaiwire.EncodeResponsesErrorEvent(code, message, errorType))
+}
+
 
 func (s *Server) writeExecutionError(w http.ResponseWriter, err error) {
 	status, code, message, errorType := classifyExecutionError(err)
