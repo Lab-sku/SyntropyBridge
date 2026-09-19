@@ -15,6 +15,7 @@ import (
 
 	"github.com/Lab-sku/SyntropyBridge/gateway-go/internal/execution"
 	"github.com/Lab-sku/SyntropyBridge/gateway-go/internal/protocol"
+	anthropicwire "github.com/Lab-sku/SyntropyBridge/gateway-go/internal/protocol/anthropic"
 	openaiwire "github.com/Lab-sku/SyntropyBridge/gateway-go/internal/protocol/openai"
 	"github.com/Lab-sku/SyntropyBridge/gateway-go/internal/provider"
 	"github.com/Lab-sku/SyntropyBridge/gateway-go/internal/router"
@@ -94,6 +95,7 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /v1/gateway/capabilities", s.handleCapabilities)
 	mux.HandleFunc("POST /v1/chat/completions", s.handleChatCompletions)
 	mux.HandleFunc("POST /v1/responses", s.handleResponses)
+	mux.HandleFunc("POST /v1/messages", s.handleAnthropicMessages)
 	return requestLogMiddleware(s.logger, mux)
 }
 
@@ -368,6 +370,161 @@ func (s *Server) handleResponsesStream(w http.ResponseWriter, request *http.Requ
 	_ = writeFrame(openaiwire.EncodeResponsesErrorEvent(code, message, errorType))
 }
 
+
+func (s *Server) handleAnthropicMessages(w http.ResponseWriter, request *http.Request) {
+	requestID := requestIDFromHeader(request.Header.Get("request-id"))
+	if requestID == "" {
+		requestID = requestIDFromHeader(request.Header.Get("X-Request-ID"))
+	}
+	w.Header().Set("request-id", requestID)
+	w.Header().Set("X-Request-ID", requestID)
+
+	if !s.inferenceReady() {
+		writeAnthropicError(w, http.StatusServiceUnavailable, requestID, "overloaded_error", "gateway inference is not configured")
+		return
+	}
+	if err := s.authenticator.Authenticate(request); err != nil {
+		writeAnthropicError(w, http.StatusUnauthorized, requestID, "authentication_error", "invalid authentication credentials")
+		return
+	}
+
+	request.Body = http.MaxBytesReader(w, request.Body, s.maxRequestBytes)
+	body, err := io.ReadAll(request.Body)
+	if err != nil {
+		var maxBytesError *http.MaxBytesError
+		if errors.As(err, &maxBytesError) {
+			writeAnthropicError(w, http.StatusRequestEntityTooLarge, requestID, "request_too_large", "request body exceeds the configured limit")
+		} else {
+			writeAnthropicError(w, http.StatusBadRequest, requestID, "invalid_request_error", "gateway could not read the request body")
+		}
+		return
+	}
+	canonical, err := anthropicwire.DecodeMessagesRequest(body, requestID)
+	if err != nil {
+		writeAnthropicError(w, http.StatusBadRequest, requestID, "invalid_request_error", err.Error())
+		return
+	}
+	if canonical.Stream {
+		s.handleAnthropicStream(w, request, canonical)
+		return
+	}
+
+	result, err := s.inference.Complete(request.Context(), canonical)
+	if err != nil {
+		s.writeAnthropicExecutionError(w, requestID, err)
+		return
+	}
+	if result == nil || result.Response == nil {
+		writeAnthropicError(w, http.StatusBadGateway, requestID, "api_error", "the upstream provider returned no response")
+		return
+	}
+	body, err = anthropicwire.EncodeMessagesResponse(result.Response, canonical.Model)
+	if err != nil {
+		s.logger.ErrorContext(request.Context(), "encode Anthropic response", "request_id", requestID, "error", err)
+		writeAnthropicError(w, http.StatusInternalServerError, requestID, "api_error", "gateway could not encode the upstream response")
+		return
+	}
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.WriteHeader(http.StatusOK)
+	_, _ = w.Write(body)
+}
+
+func (s *Server) handleAnthropicStream(w http.ResponseWriter, request *http.Request, canonical *protocol.CanonicalRequest) {
+	flusher, ok := w.(http.Flusher)
+	if !ok {
+		writeAnthropicError(w, http.StatusInternalServerError, canonical.RequestID, "api_error", "HTTP streaming is unavailable")
+		return
+	}
+	encoder := anthropicwire.NewStreamEncoder(canonical.RequestID, canonical.Model)
+	started := false
+	writeFrame := func(frame []byte) error {
+		if !started {
+			w.Header().Set("Content-Type", "text/event-stream; charset=utf-8")
+			w.Header().Set("Cache-Control", "no-cache")
+			w.Header().Set("X-Accel-Buffering", "no")
+			w.WriteHeader(http.StatusOK)
+			started = true
+		}
+		if _, err := w.Write(frame); err != nil {
+			return err
+		}
+		flusher.Flush()
+		return nil
+	}
+
+	_, err := s.inference.Stream(request.Context(), canonical, func(event protocol.StreamEvent) error {
+		frames, encodeErr := encoder.Encode(event)
+		if encodeErr != nil {
+			return encodeErr
+		}
+		for _, frame := range frames {
+			if err := writeFrame(frame); err != nil {
+				return err
+			}
+		}
+		return nil
+	})
+	if err == nil {
+		if !started {
+			writeAnthropicError(w, http.StatusBadGateway, canonical.RequestID, "api_error", "the upstream provider returned no stream events")
+		}
+		return
+	}
+	if request.Context().Err() != nil || errors.Is(err, request.Context().Err()) {
+		return
+	}
+	status, _, message, errorType := classifyExecutionError(err)
+	anthropicType := anthropicErrorType(status, errorType)
+	if !started {
+		writeAnthropicError(w, status, canonical.RequestID, anthropicType, message)
+		return
+	}
+	_ = writeFrame(anthropicwire.EncodeErrorEvent(anthropicType, message))
+}
+
+func (s *Server) writeAnthropicExecutionError(w http.ResponseWriter, requestID string, err error) {
+	status, _, message, errorType := classifyExecutionError(err)
+	writeAnthropicError(w, status, requestID, anthropicErrorType(status, errorType), message)
+}
+
+func anthropicErrorType(status int, errorType string) string {
+	switch status {
+	case http.StatusBadRequest:
+		return "invalid_request_error"
+	case http.StatusUnauthorized:
+		return "authentication_error"
+	case http.StatusForbidden:
+		return "permission_error"
+	case http.StatusNotFound:
+		return "not_found_error"
+	case http.StatusRequestEntityTooLarge:
+		return "request_too_large"
+	case http.StatusTooManyRequests:
+		return "rate_limit_error"
+	case http.StatusServiceUnavailable:
+		return "overloaded_error"
+	default:
+		if errorType == "rate_limit_error" {
+			return "rate_limit_error"
+		}
+		return "api_error"
+	}
+}
+
+func writeAnthropicError(w http.ResponseWriter, status int, requestID, errorType, message string) {
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.Header().Set("request-id", requestID)
+	w.WriteHeader(status)
+	_ = json.NewEncoder(w).Encode(map[string]any{
+		"type": "error",
+		"error": map[string]any{
+			"type":    errorType,
+			"message": message,
+		},
+		"request_id": requestID,
+	})
+}
+
 func (s *Server) writeExecutionError(w http.ResponseWriter, err error) {
 	status, code, message, errorType := classifyExecutionError(err)
 	writeOpenAIError(w, status, code, message, errorType)
@@ -443,13 +600,19 @@ func isSafeRequestID(value string) bool {
 type bearerAuthenticator struct{ token []byte }
 
 func (auth bearerAuthenticator) Authenticate(request *http.Request) error {
+	var token string
 	parts := strings.Fields(request.Header.Get("Authorization"))
-	if len(parts) != 2 || !strings.EqualFold(parts[0], "Bearer") {
-		return errors.New("missing bearer token")
+	if len(parts) == 2 && strings.EqualFold(parts[0], "Bearer") {
+		token = parts[1]
+	} else {
+		token = strings.TrimSpace(request.Header.Get("x-api-key"))
 	}
-	provided := []byte(parts[1])
+	if token == "" {
+		return errors.New("missing gateway token")
+	}
+	provided := []byte(token)
 	if len(provided) != len(auth.token) || subtle.ConstantTimeCompare(provided, auth.token) != 1 {
-		return errors.New("invalid bearer token")
+		return errors.New("invalid gateway token")
 	}
 	return nil
 }
