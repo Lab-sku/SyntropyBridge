@@ -28,7 +28,7 @@ func TestBuildRequestConvertsCanonicalChat(t *testing.T) {
 		Tools: []protocol.ToolDefinition{{Name: "weather", InputSchema: json.RawMessage("{\"type\":\"object\"}")}},
 	}
 	httpReq, err := New().BuildRequest(context.Background(), req, provider.Deployment{
-		BaseURL: "https://generativelanguage.googleapis.com",
+		BaseURL:  "https://generativelanguage.googleapis.com",
 		Metadata: map[string]string{"upstream_model": "gemini-test"},
 	}, provider.Credential{Secret: "secret"})
 	if err != nil {
