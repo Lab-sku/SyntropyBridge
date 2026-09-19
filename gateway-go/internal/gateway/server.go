@@ -370,7 +370,6 @@ func (s *Server) handleResponsesStream(w http.ResponseWriter, request *http.Requ
 	_ = writeFrame(openaiwire.EncodeResponsesErrorEvent(code, message, errorType))
 }
 
-
 func (s *Server) handleAnthropicMessages(w http.ResponseWriter, request *http.Request) {
 	requestID := requestIDFromHeader(request.Header.Get("request-id"))
 	if requestID == "" {

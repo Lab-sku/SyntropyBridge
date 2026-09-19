@@ -151,7 +151,7 @@ func (e *StreamEncoder) Encode(event protocol.StreamEvent) ([][]byte, error) {
 			outputTokens = e.usage.OutputTokens
 		}
 		frame, err := e.eventFrame("message_delta", map[string]any{
-			"type": "message_delta",
+			"type":  "message_delta",
 			"delta": map[string]any{"stop_reason": stopReason, "stop_sequence": nil},
 			"usage": map[string]any{"output_tokens": outputTokens},
 		})
@@ -312,7 +312,7 @@ func EncodeErrorEvent(errorType, message string) []byte {
 		message = "gateway request failed"
 	}
 	body, _ := json.Marshal(map[string]any{
-		"type": "error",
+		"type":  "error",
 		"error": map[string]any{"type": errorType, "message": message},
 	})
 	return []byte("event: error\ndata: " + string(body) + "\n\n")
