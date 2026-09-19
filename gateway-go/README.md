@@ -19,6 +19,8 @@ The current vertical slice contains:
 - authenticated `POST /v1/chat/completions` for non-streaming and streaming requests;
 - authenticated `POST /v1/responses` compatibility route with typed input/output,
   function-call conversion and Responses-native SSE events;
+  Chat-compatible upstreams are reached through the canonical layer, so raw Chat SSE
+  chunks are never exposed on the Responses endpoint;
 - an explicit single-upstream bootstrap mode for development and migration testing;
 - race-tested unit and end-to-end tests in GitHub Actions.
 
