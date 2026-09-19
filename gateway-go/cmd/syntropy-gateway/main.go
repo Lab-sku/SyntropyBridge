@@ -14,6 +14,7 @@ import (
 	"github.com/Lab-sku/SyntropyBridge/gateway-go/internal/gateway"
 	"github.com/Lab-sku/SyntropyBridge/gateway-go/internal/provider"
 	anthropicadapter "github.com/Lab-sku/SyntropyBridge/gateway-go/internal/provider/anthropic"
+	geminiadapter "github.com/Lab-sku/SyntropyBridge/gateway-go/internal/provider/gemini"
 	"github.com/Lab-sku/SyntropyBridge/gateway-go/internal/provider/openaicompat"
 )
 
@@ -33,6 +34,10 @@ func main() {
 	}
 	if err := registry.Register(anthropicadapter.New()); err != nil {
 		logger.Error("register provider adapter", "adapter", anthropicadapter.Name, "error", err)
+		os.Exit(2)
+	}
+	if err := registry.Register(geminiadapter.New()); err != nil {
+		logger.Error("register provider adapter", "adapter", geminiadapter.Name, "error", err)
 		os.Exit(2)
 	}
 
