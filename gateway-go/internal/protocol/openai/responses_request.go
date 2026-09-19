@@ -239,7 +239,7 @@ func responsesToolChoiceToChat(raw json.RawMessage) (json.RawMessage, error) {
 		return nil, errors.New("function name is required")
 	}
 	return json.Marshal(map[string]any{
-		"type": "function",
+		"type":     "function",
 		"function": map[string]any{"name": name},
 	})
 }

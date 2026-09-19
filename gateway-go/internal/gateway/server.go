@@ -256,7 +256,6 @@ func (s *Server) handleChatStream(w http.ResponseWriter, request *http.Request, 
 	_ = writeFrame([]byte("data: [DONE]\n\n"))
 }
 
-
 func (s *Server) handleResponses(w http.ResponseWriter, request *http.Request) {
 	requestID := requestIDFromHeader(request.Header.Get("X-Request-ID"))
 	w.Header().Set("X-Request-ID", requestID)
