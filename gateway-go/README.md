@@ -12,6 +12,9 @@ The current vertical slice contains:
 - provider adapter and registry contracts;
 - an OpenAI-compatible adapter with request-field preservation, response decoding,
   SSE text/reasoning/tool-call events, usage parsing and error normalization;
+- a native Anthropic Messages upstream adapter with system/content-block conversion,
+  tools, images, thinking, structured output, usage, native SSE events and normalized
+  errors;
 - exact model-alias resolution and explainable weighted routing;
 - authenticated `POST /v1/chat/completions` for non-streaming and streaming requests;
 - an explicit single-upstream bootstrap mode for development and migration testing;
@@ -19,6 +22,11 @@ The current vertical slice contains:
 
 Bootstrap mode is deliberately narrow. It is not the future production control plane,
 and it never infers a provider from a model name.
+
+The Anthropic adapter is registered and can be selected by an injected route resolver.
+The public Anthropic-compatible `POST /v1/messages` client endpoint is not wired yet,
+so Anthropic protocol support remains **in progress** rather than publicly claimed as
+complete.
 
 ## Build and test
 

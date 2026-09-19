@@ -13,6 +13,7 @@ import (
 	"github.com/Lab-sku/SyntropyBridge/gateway-go/internal/config"
 	"github.com/Lab-sku/SyntropyBridge/gateway-go/internal/gateway"
 	"github.com/Lab-sku/SyntropyBridge/gateway-go/internal/provider"
+	anthropicadapter "github.com/Lab-sku/SyntropyBridge/gateway-go/internal/provider/anthropic"
 	"github.com/Lab-sku/SyntropyBridge/gateway-go/internal/provider/openaicompat"
 )
 
@@ -27,7 +28,11 @@ func main() {
 
 	registry := provider.NewRegistry()
 	if err := registry.Register(openaicompat.New()); err != nil {
-		logger.Error("register provider adapter", "error", err)
+		logger.Error("register provider adapter", "adapter", openaicompat.Name, "error", err)
+		os.Exit(2)
+	}
+	if err := registry.Register(anthropicadapter.New()); err != nil {
+		logger.Error("register provider adapter", "adapter", anthropicadapter.Name, "error", err)
 		os.Exit(2)
 	}
 

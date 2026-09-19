@@ -10,13 +10,24 @@ Legend: `planned`, `in-progress`, `supported`, `blocked`.
 |---|---:|---:|---:|---:|---:|---:|---|
 | OpenAI Chat Completions | in-progress | in-progress | in-progress | in-progress | in-progress | in-progress | in-progress |
 | OpenAI Responses | — | — | — | — | — | — | planned |
-| Anthropic Messages | — | — | — | — | — | — | planned |
+| Anthropic Messages | in-progress | in-progress | in-progress | in-progress | in-progress | in-progress | in-progress |
 | Gemini GenerateContent | — | — | — | — | — | — | planned |
 | Embeddings | — | n/a | n/a | n/a | n/a | n/a | planned |
 | Rerank | — | n/a | n/a | n/a | n/a | n/a | planned |
 | Images | — | — | n/a | input/output | n/a | n/a | planned |
 | Audio | — | — | n/a | audio | n/a | n/a | planned |
 | Realtime | — | — | — | — | — | — | planned |
+
+## Current implementation notes
+
+- OpenAI Chat Completions has a public client endpoint and an OpenAI-compatible
+  upstream adapter, but production routing, retries, budgets and durable traces remain
+  unfinished.
+- Anthropic Messages now has a native upstream adapter and automated conversion tests
+  for content blocks, images, tools, thinking, structured output, usage, errors and
+  named SSE events.
+- The public Anthropic-compatible `POST /v1/messages` client endpoint is still pending.
+  Therefore no Anthropic row is marked `supported` yet.
 
 ## Provider-family implementation order
 
