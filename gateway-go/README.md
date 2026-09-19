@@ -17,6 +17,8 @@ The current vertical slice contains:
   errors;
 - exact model-alias resolution and explainable weighted routing;
 - authenticated `POST /v1/chat/completions` for non-streaming and streaming requests;
+- authenticated `POST /v1/responses` compatibility route with typed input/output,
+  function-call conversion and Responses-native SSE events;
 - an explicit single-upstream bootstrap mode for development and migration testing;
 - race-tested unit and end-to-end tests in GitHub Actions.
 
@@ -129,7 +131,10 @@ by the request context and client disconnect.
 - `GET /healthz` — process is alive;
 - `GET /readyz` — inference and client authentication are configured;
 - `GET /v1/gateway/capabilities` — registered adapters and readiness state;
-- `POST /v1/chat/completions` — authenticated OpenAI-compatible chat endpoint.
+- `POST /v1/chat/completions` — authenticated OpenAI-compatible chat endpoint;
+- `POST /v1/responses` — authenticated OpenAI Responses compatibility endpoint.
+  Stateful response chaining, conversations, background mode and built-in Responses
+  tools fail closed until the native Responses backend is implemented.
 
 ## Security notes
 
