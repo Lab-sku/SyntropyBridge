@@ -16,6 +16,7 @@ import (
 	"github.com/Lab-sku/SyntropyBridge/gateway-go/internal/execution"
 	"github.com/Lab-sku/SyntropyBridge/gateway-go/internal/protocol"
 	anthropicwire "github.com/Lab-sku/SyntropyBridge/gateway-go/internal/protocol/anthropic"
+	geminiwire "github.com/Lab-sku/SyntropyBridge/gateway-go/internal/protocol/gemini"
 	openaiwire "github.com/Lab-sku/SyntropyBridge/gateway-go/internal/protocol/openai"
 	"github.com/Lab-sku/SyntropyBridge/gateway-go/internal/provider"
 	"github.com/Lab-sku/SyntropyBridge/gateway-go/internal/router"
@@ -96,6 +97,8 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("POST /v1/chat/completions", s.handleChatCompletions)
 	mux.HandleFunc("POST /v1/responses", s.handleResponses)
 	mux.HandleFunc("POST /v1/messages", s.handleAnthropicMessages)
+	mux.HandleFunc("POST /v1beta/models/{gemini_action...}", s.handleGeminiGenerateContent)
+	mux.HandleFunc("POST /v1/models/{gemini_action...}", s.handleGeminiGenerateContent)
 	return requestLogMiddleware(s.logger, mux)
 }
 
@@ -524,6 +527,175 @@ func writeAnthropicError(w http.ResponseWriter, status int, requestID, errorType
 	})
 }
 
+func (s *Server) handleGeminiGenerateContent(w http.ResponseWriter, request *http.Request) {
+	action := request.PathValue("gemini_action")
+	model, stream, ok := parseGeminiAction(action)
+	requestID := requestIDFromHeader(request.Header.Get("X-Request-ID"))
+	w.Header().Set("X-Request-ID", requestID)
+
+	if !ok {
+		writeGeminiError(w, http.StatusNotFound, "NOT_FOUND", "unsupported Gemini method")
+		return
+	}
+	if !s.inferenceReady() {
+		writeGeminiError(w, http.StatusServiceUnavailable, "UNAVAILABLE", "gateway inference is not configured")
+		return
+	}
+	if err := s.authenticator.Authenticate(request); err != nil {
+		writeGeminiError(w, http.StatusUnauthorized, "UNAUTHENTICATED", "invalid authentication credentials")
+		return
+	}
+
+	request.Body = http.MaxBytesReader(w, request.Body, s.maxRequestBytes)
+	body, err := io.ReadAll(request.Body)
+	if err != nil {
+		var maxBytesError *http.MaxBytesError
+		if errors.As(err, &maxBytesError) {
+			writeGeminiError(w, http.StatusRequestEntityTooLarge, "RESOURCE_EXHAUSTED", "request body exceeds the configured limit")
+		} else {
+			writeGeminiError(w, http.StatusBadRequest, "INVALID_ARGUMENT", "gateway could not read the request body")
+		}
+		return
+	}
+
+	canonical, err := geminiwire.DecodeGenerateContentRequest(body, model, requestID, stream)
+	if err != nil {
+		writeGeminiError(w, http.StatusBadRequest, "INVALID_ARGUMENT", err.Error())
+		return
+	}
+	if stream {
+		s.handleGeminiStream(w, request, canonical)
+		return
+	}
+
+	result, err := s.inference.Complete(request.Context(), canonical)
+	if err != nil {
+		s.writeGeminiExecutionError(w, err)
+		return
+	}
+	if result == nil || result.Response == nil {
+		writeGeminiError(w, http.StatusBadGateway, "INTERNAL", "the upstream provider returned no response")
+		return
+	}
+
+	body, err = geminiwire.EncodeGenerateContentResponse(result.Response, canonical.Model)
+	if err != nil {
+		s.logger.ErrorContext(request.Context(), "encode Gemini response", "request_id", requestID, "error", err)
+		writeGeminiError(w, http.StatusInternalServerError, "INTERNAL", "gateway could not encode the upstream response")
+		return
+	}
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.WriteHeader(http.StatusOK)
+	_, _ = w.Write(body)
+}
+
+func (s *Server) handleGeminiStream(w http.ResponseWriter, request *http.Request, canonical *protocol.CanonicalRequest) {
+	flusher, ok := w.(http.Flusher)
+	if !ok {
+		writeGeminiError(w, http.StatusInternalServerError, "INTERNAL", "HTTP streaming is unavailable")
+		return
+	}
+
+	encoder := geminiwire.NewStreamEncoder(canonical.RequestID, canonical.Model)
+	started := false
+	writeFrame := func(frame []byte) error {
+		if !started {
+			w.Header().Set("Content-Type", "text/event-stream; charset=utf-8")
+			w.Header().Set("Cache-Control", "no-cache")
+			w.Header().Set("X-Accel-Buffering", "no")
+			w.WriteHeader(http.StatusOK)
+			started = true
+		}
+		if _, err := w.Write(frame); err != nil {
+			return err
+		}
+		flusher.Flush()
+		return nil
+	}
+
+	_, err := s.inference.Stream(request.Context(), canonical, func(event protocol.StreamEvent) error {
+		frames, encodeErr := encoder.Encode(event)
+		if encodeErr != nil {
+			return encodeErr
+		}
+		for _, frame := range frames {
+			if err := writeFrame(frame); err != nil {
+				return err
+			}
+		}
+		return nil
+	})
+	if err == nil {
+		if !started {
+			writeGeminiError(w, http.StatusBadGateway, "INTERNAL", "the upstream provider returned no stream events")
+		}
+		return
+	}
+	if request.Context().Err() != nil || errors.Is(err, request.Context().Err()) {
+		return
+	}
+
+	status, _, message, errorType := classifyExecutionError(err)
+	errorStatus := geminiErrorStatus(status, errorType)
+	if !started {
+		writeGeminiError(w, status, errorStatus, message)
+		return
+	}
+	_ = writeFrame(geminiwire.EncodeErrorEvent(status, message, errorStatus))
+}
+
+func parseGeminiAction(action string) (model string, stream bool, ok bool) {
+	switch {
+	case strings.HasSuffix(action, ":streamGenerateContent"):
+		return strings.TrimSuffix(action, ":streamGenerateContent"), true, true
+	case strings.HasSuffix(action, ":generateContent"):
+		return strings.TrimSuffix(action, ":generateContent"), false, true
+	default:
+		return "", false, false
+	}
+}
+
+func (s *Server) writeGeminiExecutionError(w http.ResponseWriter, err error) {
+	status, _, message, errorType := classifyExecutionError(err)
+	writeGeminiError(w, status, geminiErrorStatus(status, errorType), message)
+}
+
+func geminiErrorStatus(status int, errorType string) string {
+	switch status {
+	case http.StatusBadRequest:
+		return "INVALID_ARGUMENT"
+	case http.StatusUnauthorized:
+		return "UNAUTHENTICATED"
+	case http.StatusForbidden:
+		return "PERMISSION_DENIED"
+	case http.StatusNotFound:
+		return "NOT_FOUND"
+	case http.StatusTooManyRequests, http.StatusRequestEntityTooLarge:
+		return "RESOURCE_EXHAUSTED"
+	case http.StatusGatewayTimeout:
+		return "DEADLINE_EXCEEDED"
+	case http.StatusServiceUnavailable:
+		return "UNAVAILABLE"
+	default:
+		if errorType == "rate_limit_error" {
+			return "RESOURCE_EXHAUSTED"
+		}
+		return "INTERNAL"
+	}
+}
+
+func writeGeminiError(w http.ResponseWriter, status int, errorStatus, message string) {
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.WriteHeader(status)
+	_ = json.NewEncoder(w).Encode(map[string]any{
+		"error": map[string]any{
+			"code":    status,
+			"message": message,
+			"status":  errorStatus,
+		},
+	})
+}
+
 func (s *Server) writeExecutionError(w http.ResponseWriter, err error) {
 	status, code, message, errorType := classifyExecutionError(err)
 	writeOpenAIError(w, status, code, message, errorType)
@@ -605,6 +777,9 @@ func (auth bearerAuthenticator) Authenticate(request *http.Request) error {
 		token = parts[1]
 	} else {
 		token = strings.TrimSpace(request.Header.Get("x-api-key"))
+		if token == "" {
+			token = strings.TrimSpace(request.Header.Get("x-goog-api-key"))
+		}
 	}
 	if token == "" {
 		return errors.New("missing gateway token")
