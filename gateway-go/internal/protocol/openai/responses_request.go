@@ -60,7 +60,7 @@ func DecodeResponsesRequest(body []byte, requestID string) (*protocol.CanonicalR
 	if strings.TrimSpace(instructions) != "" {
 		text := instructions
 		req.Messages = append([]protocol.Message{{
-			Role: protocol.RoleDeveloper,
+			Role:    protocol.RoleDeveloper,
 			Content: []protocol.ContentPart{{Type: "text", Text: &text}},
 		}}, req.Messages...)
 	}

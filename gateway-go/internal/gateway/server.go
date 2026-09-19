@@ -368,7 +368,6 @@ func (s *Server) handleResponsesStream(w http.ResponseWriter, request *http.Requ
 	_ = writeFrame(openaiwire.EncodeResponsesErrorEvent(code, message, errorType))
 }
 
-
 func (s *Server) writeExecutionError(w http.ResponseWriter, err error) {
 	status, code, message, errorType := classifyExecutionError(err)
 	writeOpenAIError(w, status, code, message, errorType)
